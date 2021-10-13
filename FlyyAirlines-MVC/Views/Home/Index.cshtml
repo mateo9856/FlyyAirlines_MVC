@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Strona Główna";
+}
+@model HomeModel
+
+<div class="homePage">
+    <div class="searchDiv">
+        <div class="quickNotifications d-flex justify-content-beetween">
+            <div class="quickReservations">
+                <h6 class="text-white text-center text-uppercase">Szybie wyszukiwanie</h6>
+            </div>
+            @if (Model.Flights.Count() > 0)
+            {
+                <form asp-controller="Flight" asp-action="FindFlight" method="post">
+                    <label for="leavings">
+                        <select class="form-select form-select-sm" name="leavingValue" asp-items="@(new SelectList(Model.Flights, "Id", "FlightName"))">
+                            <option>Please select</option>
+                        </select>
+                    </label>
+                    <label for="destination">
+                        <select class="form-select form-select-sm" name="destinationValue" style="margin-top:10px" asp-items="@(new SelectList(Model.Flights, "Id", "FlightName"))">
+                            <option>Please select</option>
+                        </select>
+                    </label>
+                    <input class="btn btn-primary" style="margin-top:10px" type="submit" value="Szukaj !" />
+                </form>
+            }
+            @if (Model.IsSearched)
+            {
+                <div class="searchSubmit">
+                    <button class="exitBtn" asp-controller="Flight" asp-action="ResetValues">X</button>
+
+                    @if (Model.SearchedFlights.Count() > 0)
+                    {
+                        <ul class="list-group">
+                            @foreach (var item in Model.SearchedFlights)
+                            {
+                                <li class="quickSearchList list-group-item">@item.FlightName</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <h5 class="text-uppercase text-center">Brak lotów !</h5>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    <section class="bestFlights text-center">
+        <h3 style="margin-top:10px"><b>Nasz Bestseller</b></h3>
+        @if (Model.BestSeller != null)
+        {
+            <div class="bestFlightsFlex">
+                <h4>@Model.BestSeller.FlightName</h4>
+                <h6>@Model.BestSellerCount</h6>
+            </div>
+        }
+    </section>
+    @if (Model.News.Count() > 0)
+    {
+        <section class="moreInformations">
+            <h4>Wiadomości</h4>
+            <div class="quickNewsFlex">
+                <ul class="flexNewsList">
+                    @foreach (var item in Model.News)
+                    {
+                        <li id="@item.Id" class="newsCard">
+                            <img src="~@item.ImageUrl" class="imgNewsStyle" alt="image" />
+                            <h5>"@item.Topic"</h5>
+                            <p>"@item.Content"</p>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+    }
+</div>

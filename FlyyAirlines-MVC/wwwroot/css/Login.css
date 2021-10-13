@@ -1,0 +1,61 @@
+﻿.form-box {
+    width: 380px;
+    height: 480px;
+    position: relative;
+    margin: 14% auto;
+}
+
+.button-box {
+    width: 185px;
+    margin: 35px;
+    position: relative;
+    box-shadow: 0 0 20px 9px #ff61241f;
+    border-radius: 30px;
+}
+
+.toogle-btn {
+    padding: 15px 20px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+}
+
+.registerLoginForm {
+    top: 100px;
+    position: absolute;
+    width: 290px;
+    margin: 20px;
+}
+
+.input-field {
+    width: 245px;
+    margin-left: auto;
+    padding: 10px 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+}
+
+.submit-btn {
+    width: 85%;
+    padding: 10px 0;
+    cursor: pointer;
+    display: block;
+    background: purple;
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+}
+
+.check-box {
+    margin: 30px 10px 30px 0;
+}
+
+span {
+    color: #777;
+}
