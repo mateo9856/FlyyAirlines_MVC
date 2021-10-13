@@ -1,0 +1,26 @@
+﻿.aboutBackground {
+    background: url("../images/aboutusBackground.jpg");
+    width: 100%;
+    position: absolute;
+    background-blend-mode: saturation;
+    top: 0;
+    z-index: -1;
+    left: 0;
+    height: 100vh;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.aboutBlock {
+    background-color: rgba(0, 0, 0, 0.59);
+    color: whitesmoke;
+    margin: 120px auto;
+    padding: 14px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+@media (min-width: 1120px) {
+    .aboutBlock {
+        max-width: 60%;
+    }
+}

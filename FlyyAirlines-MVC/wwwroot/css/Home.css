@@ -1,0 +1,84 @@
+﻿
+.newsCard {
+    width: 250px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    cursor: pointer;
+}
+
+.newsCard:hover {
+    transition: all 0.5s 0s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.flexNewsList {
+    list-style-type:none;
+    display:flex;
+    font-size: 14px;
+    text-align : center !important; 
+    justify-content: space-between;
+    margin-top:25px;
+    min-height: 250px;
+}
+
+.quickReservations {
+    background: purple;
+    padding: 15px;
+    width: 210px;
+    border-radius: 15px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.quickReservations form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.quickReservations form input {
+    width:180px;
+}
+
+.searchDiv {
+    background-image: url("../images/airplane.jpg");
+    width: 100%;
+}
+
+.imgNewsStyle {
+    max-width: 150px;
+    min-height: 150px;
+    max-height: 150px;
+}
+.searchSubmit {
+    background-color: white;
+    margin-left: 5px;
+    border-radius: 10px;
+    min-width: 200px;
+}
+
+.exitBtn {
+    float: right;
+    position: relative;
+    right: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    background:none;
+    border:none;
+}
+
+.moreInformations {
+    margin-top:15px;
+}
+
+.bestFlights {
+    padding: 15px;
+    border-radius: 15px;
+    color:black;
+    text-shadow: 0px 3px 3px rgba(255,255,255,0.5), 3px 5px 4px rgba(81,96,104,0.88);
+    margin-top: 25px;
+    background-color: rgba(216, 207, 82, 0.378);
+}
+
+.linkStyle:hover {
+    transition: all 0.5s 0s ease-in-out;
+    text-shadow: 4px 7px 8px #28110B;
+    
+}
