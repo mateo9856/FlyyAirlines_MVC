@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FlyyAirlines_MVC.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -282,9 +282,20 @@ namespace FlyyAirlines_MVC.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "60b4fb79-a5e6-4f62-acbe-bd15e52911d5", "93124ee8-8994-471b-afe3-54d977324ed9", "Admin", "ADMIN" },
+                    { "44f39d30-4dce-4c79-809b-9b39cc3368ba", "f8afd653-c2a3-46ee-8acc-b2e57825384e", "SuperAdmin", "SUPERADMIN" },
+                    { "931f7e79-c2e6-46b9-b6ab-e7608f700bb3", "47ed1a9e-a47e-499b-9ddb-f5147684daa1", "Employee", "EMPLOYEE" },
+                    { "679e0ccf-9ce3-43a9-8a9f-79e998e24c5f", "4d9a46ef-86d4-417d-9d4a-1c28802e097c", "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "UserId", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b8b4d853-3373-41fa-9656-a93a4bb2fa29", 0, "a79ed349-38f3-4d6f-b9e1-f59d9fed3b82", null, "mateuszAdmin@flyy.com", false, false, null, "Mateusz", null, null, "$M@teuszAdmin4", null, null, false, "SuperAdmin", "e5ab768b-bc89-45f2-8d81-f67d041a3c6b", "Magdziak", false, "Super@Dmin" });
+                values: new object[] { "6213f891-dae1-4bb4-801f-db3c0d0ddbe9", 0, "0702aa34-5b5a-4217-b7f7-187f23b77d22", null, "mateuszAdmin@flyy.com", false, false, null, "Mateusz", "MATEUSZADMIN@FLYY.COM", "SUPER@DMIN", null, "AQAAAAEAACcQAAAAEBI9CNTc+6TOH+dQdV/QVHPESpt6ZIOhwcawD9OQJc7GKlX7NX9zySqqh7X0L4fj7w==", null, false, "SuperAdmin", "", "Magdziak", false, "Super@Dmin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

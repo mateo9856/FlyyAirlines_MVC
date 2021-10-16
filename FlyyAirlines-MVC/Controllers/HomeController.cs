@@ -13,7 +13,6 @@ namespace FlyyAirlines_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IAirplanesFlightsService airplanesFlightsService;
         private readonly IBaseService<Flight> flights;
         private readonly IBaseService<News> news;
@@ -26,10 +25,11 @@ namespace FlyyAirlines_MVC.Controllers
 
         public IActionResult Index()
         {
+
             var GetFlights = flights.GetAll();
             var GetNews = news.GetAll();
             var GetBestSellerCount = airplanesFlightsService.GetBestSellerFlightCount();
-
+            Console.WriteLine(User);//pomyslec dlaczego pozniej dostaje claims
             var Model = new HomeModel
             {
                 Flights = GetFlights,

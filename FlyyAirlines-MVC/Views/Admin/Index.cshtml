@@ -1,0 +1,40 @@
+﻿<div>
+    <h1>Dashboard</h1>
+    <ul style="list-style:none; margin-top: 30px;" class="d-flex justify-content-between">
+        <li class="border d-flex flex-column align-content-center text-center AdminSelectPanel bg-primary" asp-action="Users">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="Users">
+                <i class="display-4 text-white bi bi-person"></i>
+                <span class="text-white h5">Użytkownicy</span>
+            </a>
+        </li>
+        <li class="border d-flex flex-column align-content-center text-center AdminSelectPanel bg-danger">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="Reservations">
+                <i class="display-4 text-white bi bi-book"></i>
+                <span class="text-white h5">Rezerwacje</span>
+            </a>
+        </li>
+        <li class="border d-flex flex-column align-content-center text-center AdminSelectPanel bg-success">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="Employees">
+                <i class="display-4 text-white bi bi-people"></i>
+                <span class="text-white h5">Pracownicy</span>
+            </a>
+        </li>
+        <li class="border d-flex flex-column align-content-center text-center AdminSelectPanel bg-secondary">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="FlightsAirplanes">
+                <i class="display-4 text-white bi bi-arrow-down-up"></i>
+                <span class="text-white h5">Wyloty i samoloty</span>
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+<div class="card-body">
+    <canvas id="reservations" class="h-25"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"
+        integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/DrawChart.js">
+</script>

@@ -261,17 +261,19 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b8b4d853-3373-41fa-9656-a93a4bb2fa29",
+                            Id = "6213f891-dae1-4bb4-801f-db3c0d0ddbe9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a79ed349-38f3-4d6f-b9e1-f59d9fed3b82",
+                            ConcurrencyStamp = "0702aa34-5b5a-4217-b7f7-187f23b77d22",
                             Email = "mateuszAdmin@flyy.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mateusz",
-                            Password = "$M@teuszAdmin4",
+                            NormalizedEmail = "MATEUSZADMIN@FLYY.COM",
+                            NormalizedUserName = "SUPER@DMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBI9CNTc+6TOH+dQdV/QVHPESpt6ZIOhwcawD9OQJc7GKlX7NX9zySqqh7X0L4fj7w==",
                             PhoneNumberConfirmed = false,
                             Role = "SuperAdmin",
-                            SecurityStamp = "e5ab768b-bc89-45f2-8d81-f67d041a3c6b",
+                            SecurityStamp = "",
                             Surname = "Magdziak",
                             TwoFactorEnabled = false,
                             UserName = "Super@Dmin"
@@ -303,6 +305,36 @@ namespace FlyyAirlines_MVC.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "60b4fb79-a5e6-4f62-acbe-bd15e52911d5",
+                            ConcurrencyStamp = "93124ee8-8994-471b-afe3-54d977324ed9",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "44f39d30-4dce-4c79-809b-9b39cc3368ba",
+                            ConcurrencyStamp = "f8afd653-c2a3-46ee-8acc-b2e57825384e",
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
+                        },
+                        new
+                        {
+                            Id = "931f7e79-c2e6-46b9-b6ab-e7608f700bb3",
+                            ConcurrencyStamp = "47ed1a9e-a47e-499b-9ddb-f5147684daa1",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = "679e0ccf-9ce3-43a9-8a9f-79e998e24c5f",
+                            ConcurrencyStamp = "4d9a46ef-86d4-417d-9d4a-1c28802e097c",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

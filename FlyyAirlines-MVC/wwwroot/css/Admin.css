@@ -1,80 +1,19 @@
-.gridAdminBtn {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 10px;
-    grid-gap: 20px;
+.AdminSelectPanel {
+    width: 200px;
+    height: 120px;
+    cursor: pointer;
 }
 
-.buttWidth {
-    min-width: 130px;
+.hrefAdmin {
+    width: 200px;
+    height: 120px;
 }
 
-.checkBoxAddEmployee {
-    margin-right: 5px;
+.hrefAdmin:hover {
+    text-decoration: none;
 }
 
-.adminBox {
-    display: flex;
-}
-
-.otherPanel {
-    flex: 4;
-}
-.sidebar {
-    flex: 1;
-    position:sticky;
-    top: 30px;
-    height:calc(100vh - 100px);
-    text-align:center;
-}
-
-.btnCreate {
-    background:none;
-    border:none;
-    font-size:24px;
-    cursor:pointer;
-    font-weight:bold;
-    color: cornflowerblue;
-    float:right;
-}
-.btnCreate:hover {
-    transition: 0.2s;
-    text-shadow: 3px 0px 4px rgba(150, 150, 150, 1);
-}
-
-.blurStyle {
-    filter: blur(10px);
-}
-
-.postForm {
-    position: absolute;
-    left: 50%;
-    top: 125px;
-    transform: translateX(-50%);
-    background-color: whitesmoke;
-    z-index: 1;
-    width: 720px;
-    height: 600px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-.buttExit {
-    cursor:pointer;
-    border:none;
-    background:none;
-    font-size:24px;
-}
-
-.messageBtn {
-    float:left;
-    color: darkslateblue;
-    font-weight: bold;
-    font-size: 24px;
-    background:none;
-    border:none;
-    cursor:pointer;
-}
-
-.messageBtn:hover {
-    transition: 0.2s;
-    text-shadow: 3px 0px 4px rgba(150, 150, 150, 1);
+.AdminSelectPanel:hover {
+    transition: 0.3s;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }

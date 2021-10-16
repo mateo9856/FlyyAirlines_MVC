@@ -42,7 +42,7 @@ namespace FlyyAirlines_MVC
 
             services.AddIdentity<User, IdentityRole>(config =>
             {
-                config.SignIn.RequireConfirmedEmail = true;
+                config.SignIn.RequireConfirmedEmail = false;
                 config.Password.RequireUppercase = false;
                 config.Password.RequireDigit = false;
                 config.Password.RequiredLength = 7;

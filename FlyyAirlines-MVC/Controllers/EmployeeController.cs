@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FlyyAirlines_MVC.Controllers
 {
-    public class ReservationController : Controller
+    public class EmployeeController : Controller
     {
-        public IActionResult MyReservations()
+        public IActionResult EmployeePanel()
         {
             return View();
         }
