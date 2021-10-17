@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace FlyyAirlines_MVC.Controllers
 {
     public class AdminController : Controller
-    {//create services list z paginacją i operacjami crud
+    {
         private readonly IUserService UsersService;
         private readonly IBaseService<Reservation> ReservationsService;
         private readonly IBaseService<Employee> EmployeesService;

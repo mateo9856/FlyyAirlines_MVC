@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlyyAirlines.Data;
+using FlyyAirlines.Repository;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,16 @@ namespace FlyyAirlines_MVC.Controllers
 {
     public class FlightController : Controller
     {
+        private readonly IAirplanesFlightsService airplanesFlightsService;
+        private readonly IBaseService<Flight> flight;
+        private readonly IBaseService<Airplane> airplane;
+
+        public FlightController(IBaseService<Flight> _flight, IBaseService<Airplane> _airplane, IAirplanesFlightsService _airplaneFlightsService)
+        {
+            flight = _flight;
+            airplane = _airplane;
+            airplanesFlightsService = _airplaneFlightsService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -16,11 +28,11 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return View();
         }
-        public IActionResult EditFlight()
+        public IActionResult EditFlight(string id)
         {
             return RedirectToAction();
         }
-        public IActionResult DeleteFlight()
+        public IActionResult DeleteFlight(string id)
         {
             return RedirectToAction();
         }
@@ -28,11 +40,11 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return View();
         }
-        public IActionResult EditAirplane()
+        public IActionResult EditAirplane(string id)
         {
             return RedirectToAction();
         }
-        public IActionResult DeleteAirplane()
+        public IActionResult DeleteAirplane(string id)
         {
             return RedirectToAction();
         }

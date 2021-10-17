@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlyyAirlines.Data;
+using FlyyAirlines.Repository;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,13 @@ namespace FlyyAirlines_MVC.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IBaseService<Employee> employee;
+        
+        public EmployeeController(IBaseService<Employee> _employee)
+        {
+            employee = _employee;
+        }
+
         public IActionResult EmployeePanel()
         {
             return View();
@@ -16,11 +25,11 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return View();
         }
-        public IActionResult Edit()
+        public IActionResult Edit(string id)
         {
             return RedirectToAction();
         }
-        public IActionResult Delete()
+        public IActionResult Delete(string id)
         {
             return RedirectToAction();
         }
