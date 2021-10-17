@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FlyyAirlines_MVC.Controllers
 {
-    public class ReservationController : Controller
+    public class UserController : Controller
     {
-        public IActionResult MyReservations()
+        public IActionResult Index()
         {
             return View();
         }
@@ -25,6 +25,5 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return RedirectToAction();
         }
-
     }
 }
