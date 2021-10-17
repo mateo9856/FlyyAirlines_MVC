@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReflectionIT.Mvc.Paging;
 using System.IO;
 
 namespace FlyyAirlines_MVC
@@ -36,6 +37,8 @@ namespace FlyyAirlines_MVC
             services.AddControllersWithViews();
 
             services.AddSignalR();
+
+            services.AddPaging();
 
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));

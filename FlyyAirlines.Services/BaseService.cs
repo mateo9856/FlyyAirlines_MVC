@@ -51,6 +51,16 @@ namespace FlyyAirlines.Repository
             return await query.ToListAsync();
         }
 
+        public IOrderedQueryable<T> GetList(string[] children)
+        {
+            IQueryable<T> query = table;
+            foreach (string entity in children)
+            {
+                query = query.Include(entity);
+            }
+            return query.AsNoTracking().OrderBy(s => s.Id);
+        }
+
         public async Task<T> Get(string id)
         {
             var data = await table.SingleOrDefaultAsync(s => s.Id == id);

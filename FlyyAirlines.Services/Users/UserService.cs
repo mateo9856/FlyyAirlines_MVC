@@ -39,6 +39,11 @@ namespace FlyyAirlines.Repository
             return _dbContext.Users.Include(d => d.Reservations).ToList();
         }
 
+        public IOrderedQueryable<User> GetList()
+        {
+            return _dbContext.Users.AsNoTracking().OrderBy(s => s.Id);
+        }
+
         public void Update(User entity)
         {
             _dbContext.Users.Attach(entity);

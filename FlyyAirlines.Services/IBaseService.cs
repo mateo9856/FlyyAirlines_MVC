@@ -1,6 +1,7 @@
 ﻿using FlyyAirlines.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -15,5 +16,6 @@ namespace FlyyAirlines.Repository
         Task Add(T entity);
         void Update(T entity);
         Task Delete(T entity);
+        IOrderedQueryable<T> GetList(string[] children);
     }
 }
