@@ -1,0 +1,38 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Airplane>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+<h2>Samoloty</h2>
+
+<nav aria-label="User Paging">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Model samolotu</th>
+            <th scope="col">Ilość siedzeń</th>
+            <th scope="col">Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PlaneName</td>
+                <td>@item.NumberOfSeats</td>
+                <td class="d-flex justify-content-around">
+                    <a asp-controller="Flight" asp-action="EditAirplane" asp-route-id="@item.Id">
+                        Edytuj
+                    </a>
+                    <a asp-controller="Flight" asp-action="GetAirplane" asp-route-id="@item.Id">Szczegóły</a>
+                    <a asp-controller="Flight" asp-action="DeleteAirplane" asp-route-id="@item.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Suppliers navigation example">
+    <vc:pager paging-list="@Model" />
+</nav>
