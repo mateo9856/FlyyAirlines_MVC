@@ -8,6 +8,8 @@
     @await this.Component.InvokeAsync("Pager", new {pagingList = this.Model})
 </nav>
 
+<a class="btn btn-primary m-3" asp-controller="User" asp-action="EditView">Utwórz</a>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -27,7 +29,7 @@
             <td>@item.Name @item.Surname</td>
             <td>@item.DateOfBirth</td>
             <td class="d-flex justify-content-around">
-                <a asp-controller="User" asp-action="Edit" asp-route-id="@item.Id">
+                <a asp-controller="User" asp-action="EditView" asp-route-id="@item.Id">
                     Edytuj
                 </a>
                 <a asp-controller="User" asp-action="Get" asp-route-id="@item.Id">Szczegóły</a>

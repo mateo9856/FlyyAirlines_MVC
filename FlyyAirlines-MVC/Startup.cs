@@ -1,7 +1,9 @@
+using AutoMapper;
 using FlyyAirlines;
 using FlyyAirlines.Data;
 using FlyyAirlines.Database;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models.MapperProfile;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +41,13 @@ namespace FlyyAirlines_MVC
             services.AddSignalR();
 
             services.AddPaging();
+
+            var mapperConfig = new MapperConfiguration(m =>
+            {
+                m.AddProfile(new AutoMapperProfile());
+            });
+
+            services.AddSingleton(mapperConfig.CreateMapper());
 
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));

@@ -27,7 +27,7 @@
             <td>@item.Airplane.PlaneName</td>
             <td>@item.DepartureDate</td>
             <td class="d-flex justify-content-around">
-                <a asp-controller="Flight" asp-action="EditFlight" asp-route-id="@item.Id">
+                <a asp-controller="Flight" asp-action="EditFlightView" asp-route-id="@item.Id">
                     Edytuj
                 </a>
                 <a asp-controller="Flight" asp-action="GetFlight" asp-route-id="@item.Id">Szczegóły</a>

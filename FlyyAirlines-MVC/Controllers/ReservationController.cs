@@ -22,10 +22,16 @@ namespace FlyyAirlines_MVC.Controllers
             return View();
         }
 
-        public IActionResult Get(string id)
+        public IActionResult EditView(string id)
         {
             return View();
         }
+
+        public IActionResult Create()
+        {
+            return RedirectToAction();
+        }
+
         public IActionResult Edit(string id)
         {
             return RedirectToAction();

@@ -68,7 +68,47 @@ namespace FlyyAirlines_MVC.Controllers
                     return NotFound();
                 }
             }
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> RegisterEmployee(RegisterModel model)
+        {
+            var IsUserExist = await userManager.FindByEmailAsync(model.Email);
+
+            if (IsUserExist != null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var RegisterUser = await accountService.RegisterUser(model, Roles.Employee);
+                if (!RegisterUser)
+                {
+                    return NotFound();
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdmin(RegisterModel model)
+        {
+            var IsUserExist = await userManager.FindByEmailAsync(model.Email);
+
+            if (IsUserExist != null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var RegisterUser = await accountService.RegisterUser(model, Roles.Admin);
+                if (!RegisterUser)
+                {
+                    return NotFound();
+                }
+            }
+            return RedirectToAction("Index", "Home");
         }
 
     }

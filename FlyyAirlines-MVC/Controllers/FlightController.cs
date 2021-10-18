@@ -24,27 +24,39 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return View();
         }
-        public IActionResult GetFlight(string id)
+        public IActionResult EditAirplaneView(string id)
         {
             return View();
         }
-        public IActionResult EditFlight(string id)
+
+        public IActionResult CreateAirplane()
         {
             return RedirectToAction();
         }
-        public IActionResult DeleteFlight(string id)
-        {
-            return RedirectToAction();
-        }
-        public IActionResult GetAirplane(string id)
-        {
-            return View();
-        }
+
         public IActionResult EditAirplane(string id)
         {
             return RedirectToAction();
         }
         public IActionResult DeleteAirplane(string id)
+        {
+            return RedirectToAction();
+        }
+        public IActionResult EditFlightView(string id)
+        {
+            return View();
+        }
+
+        public IActionResult CreateFlight()
+        {
+            return RedirectToAction();
+        }
+
+        public IActionResult EditFlight(string id)
+        {
+            return RedirectToAction();
+        }
+        public IActionResult DeleteFlight(string id)
         {
             return RedirectToAction();
         }
