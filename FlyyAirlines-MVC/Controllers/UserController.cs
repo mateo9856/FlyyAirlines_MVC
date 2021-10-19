@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines.Services.Account;
 using FlyyAirlines_MVC.Models.FormModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,12 +15,16 @@ namespace FlyyAirlines_MVC.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
+        private readonly IAccountService accountService;
+        private UserManager<User> userManager;
         private readonly IMapper mapper;
 
-        public UserController(IUserService _userService, IMapper _mapper)
+        public UserController(IUserService _userService, IMapper _mapper, UserManager<User> _userManager, IAccountService _accountService)
         {
             userService = _userService;
             mapper = _mapper;
+            userManager = _userManager;
+            accountService = _accountService;
         }
 
         public IActionResult Index()
@@ -46,27 +52,61 @@ namespace FlyyAirlines_MVC.Controllers
             return View(UserModel);
         }
 
-        public IActionResult Create(UserFormModel model)
+        [HttpPost]
+        public async Task<IActionResult> Create(UserFormModel model)
         {
             var MapToRegister = mapper.Map<RegisterModel>(model);
 
-            switch(model.Role)
-            {
-                case "User":
-                    return RedirectToAction("Register", "Account", MapToRegister);//try change to another class
-                case "Employee":
-                    return RedirectToAction("RegisterEmployee", "Account", MapToRegister);
-                case "Admin":
-                    return RedirectToAction("RegisterAdmin", "Account", MapToRegister);
+            var IsUserExist = await userManager.FindByEmailAsync(MapToRegister.Email);
 
-                default:
-                    return RedirectToAction("Index", "Home");
+            if (IsUserExist != null)
+            {
+                return NotFound();
             }
+
+            if(ModelState.IsValid)
+            {
+                dynamic RegisterUser = null;
+                switch (model.Role)
+                {
+                    case "User":
+                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.User);
+                        break;
+                    case "Employee":
+                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.Employee);
+                        break;
+                    case "Admin":
+                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.Admin);
+                        break;
+
+                    default:
+                        return RedirectToAction("Index", "Home");
+                }
+
+                if(!RegisterUser)
+                {
+                    return NotFound();
+                }
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Edit(string id)
+        [HttpPost]
+        public IActionResult Edit(string id, UserFormModel model)
         {
-            return RedirectToAction();
+            var GetUser = userService.Get(id);
+
+            if(GetUser == null)
+            {
+                return RedirectToAction("Users", "Admin");
+            }
+
+            var MapToUser = mapper.Map(model, GetUser);
+
+            userService.Update(MapToUser);
+
+            return RedirectToAction("Users", "Admin");
         }
         public IActionResult Delete(string id)
         {

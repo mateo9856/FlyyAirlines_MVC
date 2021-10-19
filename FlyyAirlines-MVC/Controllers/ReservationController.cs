@@ -1,5 +1,7 @@
-﻿using FlyyAirlines.Data;
+﻿using AutoMapper;
+using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models.FormModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,14 @@ namespace FlyyAirlines_MVC.Controllers
     public class ReservationController : Controller
     {
         private readonly IBaseService<Reservation> reservation;
+        private readonly IBaseService<Flight> flights;
+        private readonly IMapper mapper; 
 
-        public ReservationController(IBaseService<Reservation> _reservation)
+        public ReservationController(IBaseService<Reservation> _reservation, IBaseService<Flight> _flights, IMapper _mapper)
         {
             reservation = _reservation;
+            flights = _flights;
+            mapper = _mapper;
         }
 
         public IActionResult MyReservations()
@@ -24,21 +30,57 @@ namespace FlyyAirlines_MVC.Controllers
 
         public IActionResult EditView(string id)
         {
-            return View();
+            var GetFlights = flights.GetAll();
+
+            if(id == null)
+            {
+                return View(new ReservationFormModel()
+                {
+                    Flights = GetFlights.ToList()
+                });
+            }
+
+            var GetReservation = reservation.Get(id);
+
+            var MapReservation = mapper.Map<ReservationFormModel>(GetReservation);
+            MapReservation.Flights = GetFlights.ToList();
+
+            return View(MapReservation);
         }
 
-        public IActionResult Create()
+        [HttpPost]
+        public IActionResult Create(ReservationFormModel model)
         {
-            return RedirectToAction();
+            if(ModelState.IsValid)
+            {
+                var MapReservation = mapper.Map<Reservation>(model);
+
+                reservation.Add(MapReservation);
+            }
+            return RedirectToAction("Reservations", "Admin");
         }
 
-        public IActionResult Edit(string id)
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, ReservationFormModel model)
         {
-            return RedirectToAction();
+            var GetReserve = await reservation.Get(id);
+
+            if (GetReserve == null)
+            {
+                return RedirectToAction("Reservations", "Admin");
+            }
+
+            var MapToUser = mapper.Map(model, GetReserve);
+
+            reservation.Update(MapToUser);
+
+            return RedirectToAction("Reservations", "Admin");
         }
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            return RedirectToAction();
+            var GetReserve = await reservation.Get(id);
+            await reservation.Delete(GetReserve);
+            return RedirectToAction("Reservations", "Admin");
         }
 
     }
