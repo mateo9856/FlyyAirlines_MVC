@@ -13,10 +13,20 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
         public AutoMapperProfile()
         {
             CreateMap<User, UserFormModel>().ReverseMap();
-            CreateMap<Reservation, ReservationFormModel>().ReverseMap();
-            CreateMap<Flight, FlightFormModel>().ReverseMap();
+            
+            CreateMap<Reservation, ReservationFormModel>()
+                .ForMember(d => d.FlightId, opt => opt.MapFrom(s => s.Flights.Id))
+                .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.User.Id))
+                .ReverseMap();
+            
+            CreateMap<Flight, FlightFormModel>()
+                .ForMember(d => d.AirplaneId, opt => opt.MapFrom(s => s.Airplane.Id))
+                .ReverseMap();
+            
             CreateMap<Employee, EmployeeFormModel>().ReverseMap();
+            
             CreateMap<Airplane, AirplaneFormModel>().ReverseMap();
+            
             CreateMap<RegisterModel, UserFormModel>().ReverseMap();
         }
     }
