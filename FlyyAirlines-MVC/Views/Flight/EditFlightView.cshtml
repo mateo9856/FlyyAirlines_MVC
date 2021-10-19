@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model FlightFormModel
+
+<div class="form-box">
+    <form asp-controller="Flight" asp-action=@(Model == null ? "CreateFlight" : "EditFlight") method="post">
+        <div class="d-flex">
+            <span class="text-center h5">Wylot z:</span>
+            <div class="form-group">
+                <p>Miasto:</p>
+                <input class="form-control" type="text" asp-for="@Model.FromCity" />
+            </div>
+            <div class="form-group">
+                <p>Państwo:</p>
+                <input class="form-control" type="text" asp-for="@Model.FromCountry" />
+            </div>
+        </div>
+        <div class="d-flex">
+            <span class="text-center h5">Wylot do:</span>
+            <div class="form-group">
+                <p>Miasto:</p>
+                <input class="form-control" type="text" asp-for="@Model.ToCity" />
+            </div>
+            <div class="form-group">
+                <p>Państwo:</p>
+                <input class="form-control" type="text" asp-for="@Model.ToCountry" />
+            </div>
+        </div>
+        <div class="form-group">
+            <p>Data:</p>
+            <input class="form-control" type="date" asp-for="@Model.DepartureDate" />
+        </div>
+        <div class="form-group">
+            <p>Samolot</p>
+            <select class="form-control" asp-for="@Model.AirplaneId">
+                @foreach (var item in Model.Airplanes)
+                {
+                    <option value="@item.Id">@item.PlaneName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Zarejestruj!" />
+        </div>
+    </form>
+</div>

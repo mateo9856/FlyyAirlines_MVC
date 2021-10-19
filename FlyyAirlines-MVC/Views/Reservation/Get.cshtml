@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model FlyyAirlines.Data.Reservation
+
+<div class="row text-center">
+    <div class="col">
+        <h2>Nazwisko</h2>
+        <p>@Model.Surname</p>
+    </div>
+    <div class="col">
+        <h2>Imię</h2>
+        <p>@Model.Name</p>
+    </div>
+</div>
+
+<div class="row text-center">
+    <div class="col">
+        <h2>Nr identyfikacyjny</h2>
+        <p>@Model.PersonIdentify</p>
+    </div>
+    <div class="col">
+        <h2>Miejsce</h2>
+        <p>@Model.Seat</p>
+    </div>
+</div>
+
+<div class="row text-center">
+    <div class="col">
+        <h2>Wylot</h2>
+        <p>@Model.Flights.FlightName</p>
+    </div>
+</div>

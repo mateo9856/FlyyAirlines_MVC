@@ -1,5 +1,12 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Airplane
+
+<div class="row text-center">
+    <div class="col">
+        <h2>Nazwa</h2>
+        <p>@Model.PlaneName</p>
+    </div>
+    <div class="col">
+        <h2>Ilość siedzeń</h2>
+        <p>@Model.NumberOfSeats</p>
+    </div>
+</div>
