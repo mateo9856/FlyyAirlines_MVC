@@ -54,7 +54,7 @@ namespace FlyyAirlines_MVC.Controllers
             if(ModelState.IsValid)
             {
                 var MapReservation = mapper.Map<Reservation>(model);
-
+                MapReservation.Id = Guid.NewGuid().ToString();
                 reservation.Add(MapReservation);
             }
             return RedirectToAction("Reservations", "Admin");

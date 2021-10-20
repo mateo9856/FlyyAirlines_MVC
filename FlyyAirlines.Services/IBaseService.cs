@@ -17,5 +17,6 @@ namespace FlyyAirlines.Repository
         void Update(T entity);
         Task Delete(T entity);
         IOrderedQueryable<T> GetList(string[] children);
+        IOrderedQueryable<T> GetList();
     }
 }

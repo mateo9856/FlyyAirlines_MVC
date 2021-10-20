@@ -26,6 +26,8 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
             CreateMap<Employee, EmployeeFormModel>().ReverseMap();
             
             CreateMap<Airplane, AirplaneFormModel>().ReverseMap();
+
+            CreateMap<AirplaneFormModel, Airplane>();
             
             CreateMap<RegisterModel, UserFormModel>().ReverseMap();
         }

@@ -78,5 +78,10 @@ namespace FlyyAirlines.Repository
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public IOrderedQueryable<T> GetList()
+        {
+            return table.AsNoTracking().OrderBy(s => s.Id);
+        }
     }
 }

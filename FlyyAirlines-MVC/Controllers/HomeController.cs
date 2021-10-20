@@ -29,7 +29,6 @@ namespace FlyyAirlines_MVC.Controllers
             var GetFlights = flights.GetAll();
             var GetNews = news.GetAll();
             var GetBestSellerCount = airplanesFlightsService.GetBestSellerFlightCount();
-            Console.WriteLine(User);//pomyslec dlaczego pozniej dostaje claims
             var Model = new HomeModel
             {
                 Flights = GetFlights,

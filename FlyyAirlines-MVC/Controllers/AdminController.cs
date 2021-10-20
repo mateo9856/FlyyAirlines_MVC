@@ -65,7 +65,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> Airplanes(int page = 1)
         {
-            var GetAirplanes = AirplanesService.GetList(new string[] {"Flight"});
+            var GetAirplanes = AirplanesService.GetList();
             var model = await PagingList.CreateAsync(GetAirplanes, 10, page);
             return View(model);
         }

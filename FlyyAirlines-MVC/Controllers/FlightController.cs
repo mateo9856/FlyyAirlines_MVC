@@ -22,6 +22,7 @@ namespace FlyyAirlines_MVC.Controllers
             flight = _flight;
             airplane = _airplane;
             airplanesFlightsService = _airplaneFlightsService;
+            mapper = _mapper;
         }
         public IActionResult Index()
         {
@@ -45,6 +46,7 @@ namespace FlyyAirlines_MVC.Controllers
             if(ModelState.IsValid)
             {
                 var MapAirplane = mapper.Map<Airplane>(model);
+                MapAirplane.Id = Guid.NewGuid().ToString();
                 airplane.Add(MapAirplane);
             }
 
@@ -101,6 +103,7 @@ namespace FlyyAirlines_MVC.Controllers
             if (ModelState.IsValid)
             {
                 var MapToFlight = mapper.Map<Flight>(model);
+                MapToFlight.Id = Guid.NewGuid().ToString();
                 flight.Add(MapToFlight);
             }
 
