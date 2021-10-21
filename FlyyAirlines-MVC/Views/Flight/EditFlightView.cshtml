@@ -1,9 +1,9 @@
 ﻿@model FlightFormModel
 
 <div class="form-box">
-    <form asp-controller="Flight" asp-action=@(Model == null ? "CreateFlight" : "EditFlight") method="post">
+    <form asp-controller="Flight" asp-action=@((Model.FromCity == null || Model.ToCity == null) ? "CreateFlight" : "EditFlight") asp-route-id="@Model.Id" method="post">
         <div class="d-flex">
-            <span class="text-center h5">Wylot z:</span>
+            <span class="text-center">Wylot z:</span>
             <div class="form-group">
                 <p>Miasto:</p>
                 <input class="form-control" type="text" asp-for="@Model.FromCity" />
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="d-flex">
-            <span class="text-center h5">Wylot do:</span>
+            <span class="text-center">Wylot do:</span>
             <div class="form-group">
                 <p>Miasto:</p>
                 <input class="form-control" type="text" asp-for="@Model.ToCity" />

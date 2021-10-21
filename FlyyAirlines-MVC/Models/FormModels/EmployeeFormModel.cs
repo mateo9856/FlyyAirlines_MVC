@@ -8,11 +8,11 @@ namespace FlyyAirlines_MVC.Models.FormModels
 {
     public class EmployeeFormModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string WorkPosition { get; set; }
-        public bool? IsUser { get; set; }
-        public string UserId { get; set; }
+        public bool IsUser { get; set; }
         public RegisterModel Register { get; set; }
     }
 }

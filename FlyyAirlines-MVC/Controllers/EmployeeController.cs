@@ -27,14 +27,17 @@ namespace FlyyAirlines_MVC.Controllers
         {
             return View();
         }
-        public IActionResult EditView(string id)
+        public async Task<IActionResult> EditView(string id)
         {
             if(id == null)
             {
-                return View();
+                return View(new EmployeeFormModel()
+                {
+                    IsUser = false
+                });
             }
 
-            var GetEmployee = employee.Get(id);
+            var GetEmployee = await employee.Get(id);
 
             var MapToModel = mapper.Map<EmployeeFormModel>(GetEmployee);
 
@@ -48,7 +51,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var MapToEmployee = mapper.Map<Employee>(model);
                 MapToEmployee.Id = Guid.NewGuid().ToString();
 
-                if (model.IsUser.HasValue == true)
+                if (model.IsUser)
                 {
                     var RegisterEmployee = await accountService.RegisterUser(model.Register, Roles.Employee);
                     if(!RegisterEmployee)
@@ -60,6 +63,12 @@ namespace FlyyAirlines_MVC.Controllers
             }
 
             return RedirectToAction("Employees", "Admin");
+        }
+
+        public async Task<IActionResult> Get(string id)
+        {
+            var GetEmployee = await employee.Get(id);
+            return View(GetEmployee);
         }
 
         public async Task<IActionResult> Edit(string id, EmployeeFormModel model)

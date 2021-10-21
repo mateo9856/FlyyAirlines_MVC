@@ -30,24 +30,38 @@ namespace FlyyAirlines_MVC.Controllers
             var GetElements = airplanesFlightsService.GetAllFlights();
             var PagerModel = await PagingList.CreateAsync(GetElements, 10, page);
             return View(PagerModel);
-
         }
-        public IActionResult EditAirplaneView(string id)
+
+        public async Task<IActionResult> GetAirplane(string id)
         {
-            if(id == null)
+            var GetAirplane = await airplane.Get(id);
+            return View(GetAirplane);
+        }
+
+        public async Task<IActionResult> GetFlight(string id)
+        {
+            var GetFlight = await flight.Get(id);
+            return View(GetFlight);
+        }
+
+        public async Task<IActionResult> EditAirplaneView(string id)
+        {
+            if (id == null)
             {
                 return View();
             }
 
-            var GetAirplane = airplane.Get(id);
+            var GetAirplane = await airplane.Get(id);
 
-            return View(mapper.Map<AirplaneFormModel>(GetAirplane));
+            var AirplaneModel = mapper.Map<AirplaneFormModel>(GetAirplane);
+
+            return View(AirplaneModel);
         }
 
         [HttpPost]
         public IActionResult CreateAirplane(AirplaneFormModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var MapAirplane = mapper.Map<Airplane>(model);
                 MapAirplane.Id = Guid.NewGuid().ToString();
@@ -62,7 +76,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetAirplane = await airplane.Get(id);
 
-            if(GetAirplane == null)
+            if (GetAirplane == null)
             {
                 return RedirectToAction("Airplanes", "Admin");
             }
@@ -81,18 +95,19 @@ namespace FlyyAirlines_MVC.Controllers
             return RedirectToAction("Airplanes", "Admin");
         }
 
-        public IActionResult EditFlightView(string id)
+        public async Task<IActionResult> EditFlightView(string id)
         {
             var GetAirplane = airplane.GetAll().ToList();
 
-            if(id == null)
+            if (id == null)
             {
-                return View(new FlightFormModel() { 
-                Airplanes = GetAirplane
+                return View(new FlightFormModel()
+                {
+                    Airplanes = GetAirplane
                 });
             }
 
-            var GetFlight = flight.Get(id);
+            var GetFlight = await flight.Get(id);
 
             var MapToModel = mapper.Map<FlightFormModel>(GetFlight);
 
@@ -102,13 +117,15 @@ namespace FlyyAirlines_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateFlight(FlightFormModel model)
+        public async Task<IActionResult> CreateFlight(FlightFormModel model)
         {
             if (ModelState.IsValid)
             {
+                var GetAirplane = await airplane.Get(model.AirplaneId);
                 var MapToFlight = mapper.Map<Flight>(model);
+                MapToFlight.Airplane = GetAirplane;
                 MapToFlight.Id = Guid.NewGuid().ToString();
-                flight.Add(MapToFlight);
+                await flight.Add(MapToFlight);
             }
 
             return RedirectToAction("Flights", "Admin");
@@ -119,7 +136,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetFlight = await flight.Get(id);
 
-            if(GetFlight == null)
+            if (GetFlight == null)
             {
                 return RedirectToAction("Flights", "Admin");
             }
@@ -130,7 +147,7 @@ namespace FlyyAirlines_MVC.Controllers
 
             return RedirectToAction("Flights", "Admin");
         }
-        public async Task <IActionResult> DeleteFlight(string id)
+        public async Task<IActionResult> DeleteFlight(string id)
         {
             var GetFlight = await airplane.Get(id);
             await airplane.Delete(GetFlight);

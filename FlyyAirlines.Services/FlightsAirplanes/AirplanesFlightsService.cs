@@ -84,7 +84,7 @@ namespace FlyyAirlines.Repository
             if (_dbContext.Flights.Count() <= 0)
                 return 0;
 
-            var GetFlights = _dbContext.Flights
+            var GetFlights = _dbContext.Flights.AsEnumerable()
                 .GroupBy(f => f.Id)
                 .OrderByDescending(g => g.Count())
                 .First();

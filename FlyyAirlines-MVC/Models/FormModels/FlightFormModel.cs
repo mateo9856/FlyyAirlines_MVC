@@ -8,6 +8,7 @@ namespace FlyyAirlines_MVC.Models.FormModels
 {
     public class FlightFormModel
     {
+        public string Id { get; set; }
         public string FromCountry { get; set; }
         public string FromCity { get; set; }
         public string ToCountry { get; set; }

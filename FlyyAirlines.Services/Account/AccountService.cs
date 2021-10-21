@@ -24,19 +24,20 @@ namespace FlyyAirlines.Services.Account
         {
             var checkUser = await userManager.FindByNameAsync(loginModel.UserName);
 
-            if(checkUser == null)
+            await userManager.AddClaimsAsync(checkUser, new Claim[]
+            {
+                    new Claim("Role", checkUser.Role),
+                    new Claim("Email", checkUser.Email)
+            });
+
+            if (checkUser == null)
             {
                 return false;
             }
 
             var result = await signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, false);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                await userManager.AddClaimsAsync(checkUser, new Claim[]
-                {
-                    new Claim("Role", checkUser.Role),
-                    new Claim("Email", checkUser.Email)
-                });
                 return true;
             }
             return false;

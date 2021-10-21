@@ -2,6 +2,7 @@
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines_MVC.Models.FormModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,15 @@ namespace FlyyAirlines_MVC.Controllers
     {
         private readonly IBaseService<Reservation> reservation;
         private readonly IBaseService<Flight> flights;
-        private readonly IMapper mapper; 
+        private readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
 
-        public ReservationController(IBaseService<Reservation> _reservation, IBaseService<Flight> _flights, IMapper _mapper)
+        public ReservationController(IBaseService<Reservation> _reservation, IBaseService<Flight> _flights, IMapper _mapper, UserManager<User> _userService)
         {
             reservation = _reservation;
             flights = _flights;
             mapper = _mapper;
+            userManager = _userService;
         }
 
         public IActionResult MyReservations()
@@ -33,7 +36,7 @@ namespace FlyyAirlines_MVC.Controllers
             return View();
         }
 
-        public IActionResult EditView(string id)
+        public async Task<IActionResult> EditView(string id)
         {
             var GetFlights = flights.GetAll();
 
@@ -45,7 +48,7 @@ namespace FlyyAirlines_MVC.Controllers
                 });
             }
 
-            var GetReservation = reservation.Get(id);
+            var GetReservation = await reservation.Get(id);
 
             var MapReservation = mapper.Map<ReservationFormModel>(GetReservation);
             MapReservation.Flights = GetFlights.ToList();
@@ -54,13 +57,15 @@ namespace FlyyAirlines_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ReservationFormModel model)
+        public async Task<IActionResult> Create(ReservationFormModel model)
         {
             if(ModelState.IsValid)
             {
                 var MapReservation = mapper.Map<Reservation>(model);
                 MapReservation.Id = Guid.NewGuid().ToString();
-                reservation.Add(MapReservation);
+                MapReservation.Flights = await flights.Get(model.FlightId);
+                MapReservation.User = await userManager.GetUserAsync(User);
+                await reservation.Add(MapReservation);
             }
             return RedirectToAction("Reservations", "Admin");
         }
@@ -76,7 +81,8 @@ namespace FlyyAirlines_MVC.Controllers
             }
 
             var MapToUser = mapper.Map(model, GetReserve);
-
+            MapToUser.Flights = await flights.Get(model.FlightId);
+            MapToUser.User = await userManager.GetUserAsync(User);
             reservation.Update(MapToUser);
 
             return RedirectToAction("Reservations", "Admin");

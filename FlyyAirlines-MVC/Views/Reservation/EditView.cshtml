@@ -1,7 +1,7 @@
 ﻿@model ReservationFormModel
 
 <div class="form-box">
-    <form asp-controller="Reservation" asp-action=@(Model.PersonIdentify == null ? "Create" : "Edit") method="post">
+    <form asp-controller="Reservation" asp-action=@(Model.PersonIdentify == null ? "Create" : "Edit") asp-route-id="@Model.Id" method="post">
         <div class="d-flex">
             <div class="form-group">
                 <p>Imię:</p>
