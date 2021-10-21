@@ -3,6 +3,7 @@ using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines_MVC.Models.FormModels;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,12 @@ namespace FlyyAirlines_MVC.Controllers
             airplanesFlightsService = _airplaneFlightsService;
             mapper = _mapper;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View();
+            var GetElements = airplanesFlightsService.GetAllFlights();
+            var PagerModel = await PagingList.CreateAsync(GetElements, 10, page);
+            return View(PagerModel);
+
         }
         public IActionResult EditAirplaneView(string id)
         {

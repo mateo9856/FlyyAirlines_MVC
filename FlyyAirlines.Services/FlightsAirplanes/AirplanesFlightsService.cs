@@ -1,6 +1,7 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Database;
 using LumenWorks.Framework.IO.Csv;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -71,6 +72,11 @@ namespace FlyyAirlines.Repository
                 return true;
             }
             return false;
+        }
+
+        public IOrderedQueryable<Flight> GetAllFlights()
+        {
+            return _dbContext.Flights.Include(d => d.Airplane).AsNoTracking().OrderByDescending(s => s.DepartureDate);
         }
 
         public int GetBestSellerFlightCount()

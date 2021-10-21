@@ -28,6 +28,11 @@ namespace FlyyAirlines_MVC.Controllers
             return View();
         }
 
+        public IActionResult ReserveByFlightId()
+        {
+            return View();
+        }
+
         public IActionResult EditView(string id)
         {
             var GetFlights = flights.GetAll();
