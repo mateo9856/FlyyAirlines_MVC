@@ -42,7 +42,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             if(id == null)
             {
-                return View();
+                return View(new UserFormModel());
             }
 
             var GetUser = userService.Get(id);
@@ -70,17 +70,17 @@ namespace FlyyAirlines_MVC.Controllers
                 switch (model.Role)
                 {
                     case "User":
-                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.User);
+                        RegisterUser = await accountService.RegisterUser(MapToRegister, Roles.User);
                         break;
                     case "Employee":
-                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.Employee);
+                        RegisterUser = await accountService.RegisterUser(MapToRegister, Roles.Employee);
                         break;
                     case "Admin":
-                        RegisterUser = accountService.RegisterUser(MapToRegister, Roles.Admin);
+                        RegisterUser = await accountService.RegisterUser(MapToRegister, Roles.Admin);
                         break;
 
                     default:
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Users", "Admin");
                 }
 
                 if(!RegisterUser)
@@ -89,7 +89,7 @@ namespace FlyyAirlines_MVC.Controllers
                 }
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Users", "Admin");
         }
 
         [HttpPost]

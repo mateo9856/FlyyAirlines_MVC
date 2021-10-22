@@ -1,7 +1,7 @@
 ﻿@model FlightFormModel
 
 <div class="form-box">
-    <form asp-controller="Flight" asp-action=@((Model.FromCity == null || Model.ToCity == null) ? "CreateFlight" : "EditFlight") asp-route-id="@Model.Id" method="post">
+    <form asp-controller="Flight" asp-action=@(Model.Id == null ? "CreateFlight" : "EditFlight") asp-route-id="@Model.Id" method="post">
         <div class="d-flex">
             <span class="text-center">Wylot z:</span>
             <div class="form-group">

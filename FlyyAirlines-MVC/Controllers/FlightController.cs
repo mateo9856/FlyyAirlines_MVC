@@ -48,7 +48,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             if (id == null)
             {
-                return View();
+                return View(new AirplaneFormModel());
             }
 
             var GetAirplane = await airplane.Get(id);

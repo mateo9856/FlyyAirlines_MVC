@@ -1,7 +1,7 @@
 ﻿@model EmployeeFormModel
 
 <div class="form-box">
-    <form asp-controller="Employee" asp-action=@((Model.Name == null || Model.Surname == null) ? "Create" : "Edit") asp-route-id="@Model.Id" method="post">
+    <form asp-controller="Employee" asp-action=@((Model.Id == null || Model.Surname == null) ? "Create" : "Edit") asp-route-id="@Model.Id" method="post">
         <div class="d-flex">
             <div class="form-group">
                 <p>Imię:</p>

@@ -1,7 +1,7 @@
 ﻿@model AirplaneFormModel
 
 <div class="form-box">
-    <form asp-controller="Flight" asp-action=@(Model == null ? "CreateAirplane" : "EditAirplane") asp-route-id="@Model.Id" method="post">
+    <form asp-controller="Flight" asp-action=@(Model.Id == null ? "CreateAirplane" : "EditAirplane") asp-route-id="@Model.Id" method="post">
             <div class="form-group">
                 <p>Nazwa samolotu:</p>
                 <input class="form-control" type="text" asp-for="@Model.PlaneName" />

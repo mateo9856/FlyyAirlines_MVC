@@ -56,6 +56,13 @@ namespace FlyyAirlines_MVC.Controllers
             return View(MapReservation);
         }
 
+        public async Task<IActionResult> Get(string id)
+        {
+            var child = new string[] { "Flights" };
+            var GetReservation = await reservation.EntityWithEagerLoad(d => d.Id == id, child);
+            return View(GetReservation.FirstOrDefault());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(ReservationFormModel model)
         {
