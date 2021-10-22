@@ -1,8 +1,10 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,8 +20,8 @@ namespace FlyyAirlines.Repository
 
         public async Task <IEnumerable<Reservation>> GetReservationsFromUser(User user)
         {
-            var getUser = await _dbContext.Users.FindAsync(user);
-            return getUser.Reservations;
+            var getReservations = await _dbContext.Reservations.Include(u => u.User).Include(f => f.Flights).Where(d => d.User == user).ToListAsync();
+            return getReservations;
         }
     }
 }

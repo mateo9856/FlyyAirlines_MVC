@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models;
 using FlyyAirlines_MVC.Models.FormModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,20 +16,47 @@ namespace FlyyAirlines_MVC.Controllers
     {
         private readonly IBaseService<Reservation> reservation;
         private readonly IBaseService<Flight> flights;
+        private readonly IReserveService reserveService;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
 
-        public ReservationController(IBaseService<Reservation> _reservation, IBaseService<Flight> _flights, IMapper _mapper, UserManager<User> _userService)
+        public ReservationController(IBaseService<Reservation> _reservation, IBaseService<Flight> _flights, IMapper _mapper
+            , UserManager<User> _userService, IReserveService _reserveService)
         {
             reservation = _reservation;
             flights = _flights;
             mapper = _mapper;
             userManager = _userService;
+            reserveService = _reserveService;
         }
 
-        public IActionResult MyReservations()
+        public async Task<IActionResult> MyReservations()
         {
-            return View();
+                var GetUser = await userManager.GetUserAsync(User);
+                if(GetUser == null)
+                {
+                    return NotFound();
+                }
+                var GetUserReservations = await reserveService.GetReservationsFromUser(GetUser);
+
+                if(GetUserReservations == null)
+                {
+                    return View(new ReservationViewModel()
+                    {
+                        Reservations = null,
+                        ReservationCount = 0,
+                        FormModel = new ReservationFormModel()
+                    });
+                }
+
+                var ViewModel = new ReservationViewModel()
+                {
+                    Reservations = GetUserReservations.ToList(),
+                    ReservationCount = GetUserReservations.Count(),
+                    FormModel = new ReservationFormModel()
+                };
+                ViewModel.FormModel.Flights = flights.GetAll().ToList();
+                return View(ViewModel);
         }
 
         public IActionResult ReserveByFlightId()

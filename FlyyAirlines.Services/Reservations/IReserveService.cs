@@ -1,5 +1,6 @@
 ﻿using FlyyAirlines.Data;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlyyAirlines.Repository

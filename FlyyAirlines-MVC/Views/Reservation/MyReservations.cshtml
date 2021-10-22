@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ReservationViewModel 
+
+<div class="row">
+    <div class="col-6">
+        <h3 class="text-center">Moje rezerwacje</h3>
+        <br />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Imię</th>
+                    <th scope="col">Nazwisko</th>
+                    <th scope="col">Miejsce</th>
+                    <th scope="col">Wylot</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var item in Model.Reservations)
+            {
+                <tr>
+                    <td colspan="2">@item.Name @item.Surname</td>
+                    <td>@item.Seat.Value</td>
+                    <td>@item.Flights.FlightName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <h3 class="text-center">Szybka rezerwacja</h3>
+
+        <div class="form-box">
+            <form asp-controller="Reservation" asp-action="Create" method="post">
+                <div class="d-flex">
+                    <div class="form-group">
+                        <p>Imię:</p>
+                        <input class="form-control" type="text" asp-for="@Model.FormModel.Name" />
+                    </div>
+                    <div class="form-group">
+                        <p>Nazwisko:</p>
+                        <input class="form-control" type="text" asp-for="@Model.FormModel.Surname" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p>Nr identyfikacyjny:</p>
+                    <input class="form-control" type="number" asp-for="@Model.FormModel.PersonIdentify" />
+                </div>
+                <div class="form-group">
+                    <p>Miejsce:</p>
+                    <input class="form-control" type="number" asp-for="@Model.FormModel.Seat" />
+                </div>
+                <div class="form-group">
+                    <p>Wylot</p>
+                    <select class="form-control" asp-for="@Model.FormModel.FlightId">
+                        @foreach (var item in Model.FormModel.Flights)
+                        {
+                            <option value="@item.Id">@item.FlightName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" value="Zarejestruj!" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
