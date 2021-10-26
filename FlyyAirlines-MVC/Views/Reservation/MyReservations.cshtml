@@ -24,9 +24,18 @@
             }
             </tbody>
         </table>
+
+        <div>
+            <label class="switch" id="getReserve">
+                <input type="checkbox" id="toggleSwitcher" />
+                <span class="slider round"></span>
+            </label>
+            <p>Szybka rezerwacja</p>
+        </div>
+
     </div>
 
-    <div class="col-6">
+    <div id="quickReserve" class="col-6">
         <h3 class="text-center">Szybka rezerwacja</h3>
 
         <div class="form-box">
@@ -52,7 +61,7 @@
                 <div class="form-group">
                     <p>Wylot</p>
                     <select class="form-control" asp-for="@Model.FormModel.FlightId">
-                        @foreach (var item in Model.FormModel.Flights)
+                        @foreach (var item in Model.FormModel.FlightsList)
                         {
                             <option value="@item.Id">@item.FlightName</option>
                         }
@@ -66,3 +75,5 @@
 
     </div>
 </div>
+
+<script src="~/js/ReserveSwitcher.js" asp-append-version="true"></script>
