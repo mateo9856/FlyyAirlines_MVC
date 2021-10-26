@@ -61,7 +61,7 @@ namespace FlyyAirlines_MVC.Controllers
 
             if (IsUserExist != null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage", "Home");
             }
 
             if(ModelState.IsValid)

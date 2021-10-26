@@ -40,8 +40,8 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> GetFlight(string id)
         {
-            var GetFlight = await flight.Get(id);
-            return View(GetFlight);
+            var GetFlight = await flight.EntityWithEagerLoad(d => d.Id == id, new string[] { "Airplane" });
+            return View(GetFlight.First());
         }
 
         public async Task<IActionResult> EditAirplaneView(string id)

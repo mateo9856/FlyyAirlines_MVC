@@ -35,7 +35,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var GetUser = await userManager.GetUserAsync(User);
                 if(GetUser == null)
                 {
-                    return NotFound();
+                    return RedirectToAction("NotFoundPage", "Home");
                 }
                 var GetUserReservations = await reserveService.GetReservationsFromUser(GetUser);
 
@@ -55,13 +55,33 @@ namespace FlyyAirlines_MVC.Controllers
                     ReservationCount = GetUserReservations.Count(),
                     FormModel = new ReservationFormModel()
                 };
-                ViewModel.FormModel.Flights = flights.GetAll().ToList();
+                ViewModel.FormModel.FlightsList = flights.GetAll().ToList();
                 return View(ViewModel);
         }
 
-        public IActionResult ReserveByFlightId()
-        {
-            return View();
+        public async Task<IActionResult> ReserveByFlightId(string id)
+        {//to change
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if(GetUser == null)
+            {
+                return RedirectToAction("NotFoundPage", "Home");
+            }
+
+            var GetByFlightId = await reserveService.GetByFlightId(id);
+
+            if(GetByFlightId == null)
+            {
+                return RedirectToAction("NotFoundPage", "Home");
+            }
+            
+            var MapToForm = mapper.Map<ReservationFormModel>(GetByFlightId);
+            MapToForm.FlightsList = new List<Flight>()
+            {
+                GetByFlightId.Flights
+            };
+
+            return View("Reserve", MapToForm);
         }
 
         public async Task<IActionResult> EditView(string id)
@@ -72,14 +92,14 @@ namespace FlyyAirlines_MVC.Controllers
             {
                 return View(new ReservationFormModel()
                 {
-                    Flights = GetFlights.ToList()
+                    FlightsList = GetFlights.ToList()
                 });
             }
 
             var GetReservation = await reservation.Get(id);
 
             var MapReservation = mapper.Map<ReservationFormModel>(GetReservation);
-            MapReservation.Flights = GetFlights.ToList();
+            MapReservation.FlightsList = GetFlights.ToList();
 
             return View(MapReservation);
         }

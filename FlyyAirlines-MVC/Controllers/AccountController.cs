@@ -33,7 +33,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var Login = await accountService.LoginUser(model);
                 if(!Login)
                 {
-                    return NotFound();
+                    return RedirectToAction("NotFoundPage", "Home");
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -57,7 +57,7 @@ namespace FlyyAirlines_MVC.Controllers
 
             if(IsUserExist != null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage", "Home");
             }
             
             if(ModelState.IsValid)
@@ -65,7 +65,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var RegisterUser = await accountService.RegisterUser(model, Roles.User);
                 if(!RegisterUser)
                 {
-                    return NotFound();
+                    return RedirectToAction("NotFoundPage", "Home");
                 }
             }
             return RedirectToAction("Index", "Home");
