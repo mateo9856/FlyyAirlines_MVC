@@ -17,3 +17,7 @@
     margin-bottom: 5px;
     font-weight: bold;
 }
+
+#quickReserve {
+    display:none;
+}
