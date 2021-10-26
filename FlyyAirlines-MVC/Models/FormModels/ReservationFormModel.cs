@@ -15,6 +15,6 @@ namespace FlyyAirlines_MVC.Models.FormModels
         public int? Seat { get; set; }
         public string FlightId { get; set; }
         public string UserId { get; set; }
-        public List<Flight> Flights { get; set; }
+        public List<Flight> FlightsList { get; set; }
     }
 }

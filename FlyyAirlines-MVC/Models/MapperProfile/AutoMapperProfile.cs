@@ -16,7 +16,7 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
 
             CreateMap<Reservation, ReservationFormModel>()
                 .ForMember(d => d.FlightId, opt => opt.MapFrom(s => s.Flights.Id))
-                .ForMember(d => d.Flights, opt => opt.Ignore())
+                .ForMember(d => d.FlightsList, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<ReservationFormModel, Reservation>()
