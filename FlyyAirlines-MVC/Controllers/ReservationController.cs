@@ -68,20 +68,14 @@ namespace FlyyAirlines_MVC.Controllers
                 return RedirectToAction("NotFoundPage", "Home");
             }
 
-            var GetByFlightId = await reserveService.GetByFlightId(id);
+            var GetByFlightId = await flights.Get(id);
 
             if(GetByFlightId == null)
             {
                 return RedirectToAction("NotFoundPage", "Home");
             }
-            
-            var MapToForm = mapper.Map<ReservationFormModel>(GetByFlightId);
-            MapToForm.FlightsList = new List<Flight>()
-            {
-                GetByFlightId.Flights
-            };
 
-            return View("Reserve", MapToForm);
+            return View("Reserve", new ReservationFormModel() { FlightsList = new List<Flight>() { GetByFlightId }, FlightId = GetByFlightId.Id });
         }
 
         public async Task<IActionResult> EditView(string id)
@@ -121,8 +115,20 @@ namespace FlyyAirlines_MVC.Controllers
                 MapReservation.Flights = await flights.Get(model.FlightId);
                 MapReservation.User = await userManager.GetUserAsync(User);
                 await reservation.Add(MapReservation);
+                return RedirectToAction("ReserveSuccess", "Reservation", new { data = MapReservation });
             }
             return RedirectToAction("Reservations", "Admin");
+        }
+
+        public IActionResult ReserveSuccess(Reservation data)
+        {
+            if (data == null) {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var MapToModel = mapper.Map<ReservationSummaryModel>(data);
+
+            return View(MapToModel);
         }
 
         [HttpPost]

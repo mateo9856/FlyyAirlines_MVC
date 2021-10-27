@@ -5,7 +5,7 @@ namespace FlyyAirlines.Repository
 {
     public static class TemplateGenerator
     {
-        public static string GetHTMLString(Reservation reservation, Employee employee) {
+        public static string GetHTMLString(Reservation reservation) {
 
             var sb = new StringBuilder();
 
@@ -28,12 +28,7 @@ namespace FlyyAirlines.Repository
                                 </tr></tbody>", reservation.Name, reservation.Surname, reservation.Seat,
                                 reservation.PersonIdentify, reservation.Flights.FlightName);
 
-            sb.AppendFormat(@"</table>
-                                 <div class='blockBottom'>
-                                   <p class='confirmed'>Confirm :  <b>{0} {1}</b></p>
-                                  </div>
-                            </body>
-                           </html>", employee.Surname, employee.Name);
+            
 
             return sb.ToString();
         }

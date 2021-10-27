@@ -1,5 +1,20 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ReservationSummaryModel
+
+<div class="row">
+    <div class="col-6">
+        <h4>Dziękujemy!</h4>
+        <p>Pomyślnie zarezerwowano oto podane dane:</p>
+        <ul class="list-unstyled">
+            <li><b>Imię i nazwisko: </b>@Model.Name @Model.Surname</li>
+            <li><b>PESEL: </b>@Model.PersonIdentify</li>
+            <li><b>Wylot: </b>@Model.FlightName</li>
+            <li><b>Miejsce: </b>@Model.Seat</li>
+        </ul>
+
+        <a target="_blank" asp-controller="PDF" asp-action="GeneratePDF" asp-route-id="@Model.Id" class="btn btn-outline-primary">Generuj PDF</a>
+
+    </div>
+    <div class="col-6">
+
+    </div>
+</div>
