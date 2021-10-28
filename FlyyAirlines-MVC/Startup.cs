@@ -1,4 +1,6 @@
 using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using FlyyAirlines;
 using FlyyAirlines.Data;
 using FlyyAirlines.Database;
@@ -69,6 +71,8 @@ namespace FlyyAirlines_MVC
 
             var context = new CustomAssemblyLoadContext();
             context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.dll"));
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddCustomServices();
 
