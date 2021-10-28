@@ -52,7 +52,7 @@ namespace FlyyAirlines.Services.Account
         {
             var newUser = new User()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = registerModel.Id,
                 Email = registerModel.Email,
                 UserName = registerModel.UserName,
                 Password = registerModel.Password,
