@@ -1,6 +1,6 @@
 # FlyyAirlines_MVC
 
-MVC implementation of the FlyyAirlines application as a credit module at university.
+MVC implementation of the FlyyAirlines application as a pass module on college.
 
 ### Used technologies
 - ASP.NET CORE 5
