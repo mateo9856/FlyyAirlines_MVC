@@ -11,6 +11,7 @@
                     <th scope="col">Nazwisko</th>
                     <th scope="col">Miejsce</th>
                     <th scope="col">Wylot</th>
+                    <th scope="col">Akcje</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +21,7 @@
                     <td colspan="2">@item.Name @item.Surname</td>
                     <td>@item.Seat.Value</td>
                     <td>@item.Flights.FlightName</td>
+                    <td><a class="text-info" asp-action="ReserveSuccess" asp-route-id="@item.Id">Generuj PDF</a></td>
                 </tr>
             }
             </tbody>
@@ -38,40 +40,7 @@
     <div id="quickReserve" class="col-6">
         <h3 class="text-center">Szybka rezerwacja</h3>
 
-        <div class="form-box">
-            <form asp-controller="Reservation" asp-action="Create" method="post">
-                <div class="d-flex">
-                    <div class="form-group">
-                        <p>Imię:</p>
-                        <input class="form-control" type="text" asp-for="@Model.FormModel.Name" />
-                    </div>
-                    <div class="form-group">
-                        <p>Nazwisko:</p>
-                        <input class="form-control" type="text" asp-for="@Model.FormModel.Surname" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <p>Nr identyfikacyjny:</p>
-                    <input class="form-control" type="number" asp-for="@Model.FormModel.PersonIdentify" />
-                </div>
-                <div class="form-group">
-                    <p>Miejsce:</p>
-                    <input class="form-control" type="number" asp-for="@Model.FormModel.Seat" />
-                </div>
-                <div class="form-group">
-                    <p>Wylot</p>
-                    <select class="form-control" asp-for="@Model.FormModel.FlightId">
-                        @foreach (var item in Model.FormModel.FlightsList)
-                        {
-                            <option value="@item.Id">@item.FlightName</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Zarejestruj!" />
-                </div>
-            </form>
-        </div>
+        <partial name="_QuickReserve" model="new ReservationFormModel() { FlightsList = Model.FormModel.FlightsList }" />
 
     </div>
 </div>
