@@ -30,7 +30,7 @@ namespace FlyyAirlines_MVC.Controllers
             }
 
             var GetReserve = await reservations
-                .EntityWithEagerLoad(d => d.Id == id, new string[] { "Flight" });
+                .EntityWithEagerLoad(d => d.Id == id, new string[] { "Flights" });
 
             if(GetReserve == null)
             {
@@ -57,7 +57,6 @@ namespace FlyyAirlines_MVC.Controllers
                 HeaderSettings = { FontName = "Arial", FontSize = 12, Line = true },
                 FooterSettings = { FontName = "Arial", FontSize = 12, Line = true }
             };
-            //later check
 
             var pdf = new HtmlToPdfDocument()
             {
