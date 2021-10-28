@@ -60,7 +60,7 @@ namespace FlyyAirlines_MVC.Controllers
         }
 
         public async Task<IActionResult> ReserveByFlightId(string id)
-        {//to change
+        {
             var GetUser = await userManager.GetUserAsync(User);
 
             if(GetUser == null)
@@ -115,18 +115,20 @@ namespace FlyyAirlines_MVC.Controllers
                 MapReservation.Flights = await flights.Get(model.FlightId);
                 MapReservation.User = await userManager.GetUserAsync(User);
                 await reservation.Add(MapReservation);
-                return RedirectToAction("ReserveSuccess", "Reservation", new { data = MapReservation });
+                return RedirectToAction("ReserveSuccess", "Reservation", new { id = MapReservation.Id });
             }
             return RedirectToAction("Reservations", "Admin");
         }
 
-        public IActionResult ReserveSuccess(Reservation data)
+        public async Task<IActionResult> ReserveSuccess(string id)
         {
+            var data = await reservation.EntityWithEagerLoad(d => d.Id == id, new string[] { "Flights" });
+
             if (data == null) {
                 return RedirectToAction("Index", "Home");
             }
 
-            var MapToModel = mapper.Map<ReservationSummaryModel>(data);
+            var MapToModel = mapper.Map<ReservationSummaryModel>(data.First());
 
             return View(MapToModel);
         }

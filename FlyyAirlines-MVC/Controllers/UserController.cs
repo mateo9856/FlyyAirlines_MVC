@@ -55,6 +55,7 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(UserFormModel model)
         {
+            model.Id = Guid.NewGuid().ToString();
             var MapToRegister = mapper.Map<RegisterModel>(model);
 
             var IsUserExist = await userManager.FindByEmailAsync(MapToRegister.Email);

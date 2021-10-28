@@ -54,7 +54,7 @@ namespace FlyyAirlines_MVC.Controllers
         public async Task<IActionResult> Register(RegisterModel model)
         {
             var IsUserExist = await userManager.FindByEmailAsync(model.Email);
-
+            model.Id = Guid.NewGuid().ToString();
             if(IsUserExist != null)
             {
                 return RedirectToAction("NotFoundPage", "Home");

@@ -16,11 +16,13 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IBaseService<Employee> employee;
         private readonly IAccountService accountService;
         private readonly IMapper mapper;
-        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper, IAccountService _accountService)
+        private readonly IUserService users;
+        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper, IAccountService _accountService, IUserService Users)
         {
             employee = _employee;
             mapper = _mapper;
             accountService = _accountService;
+            users = Users;
         }
 
         public IActionResult EmployeePanel()
@@ -53,11 +55,15 @@ namespace FlyyAirlines_MVC.Controllers
 
                 if (model.IsUser)
                 {
+                    model.Register.Name = model.Name;
+                    model.Register.Surname = model.Surname;
+                    model.Register.Id = Guid.NewGuid().ToString();
                     var RegisterEmployee = await accountService.RegisterUser(model.Register, Roles.Employee);
                     if(!RegisterEmployee)
                     {
                         return RedirectToAction("Employees", "Admin");
                     }
+                    MapToEmployee.User = users.Get(model.Register.Id);
                 }
                 await employee.Add(MapToEmployee);
             }
