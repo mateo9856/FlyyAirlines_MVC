@@ -3,18 +3,18 @@
 @if (UserRole == Roles.User)
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="MyReservations">Moje rezerwacje</a>
+        <a class="nav-link text-dark dropdownHover" asp-area="" asp-controller="Reservation" asp-action="MyReservations">Moje rezerwacje</a>
     </li>
 }
 else if (UserRole == Roles.Employee)
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="EmployeePanel">Panel pracownika</a>
+        <a class="nav-link text-dark dropdownHover" asp-area="" asp-controller="Employee" asp-action="EmployeePanel">Panel pracownika</a>
     </li>
 }
 else if (UserRole == Roles.Admin || UserRole == Roles.SuperAdmin)
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+        <a class="nav-link text-dark dropdownHover" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
     </li>
 }

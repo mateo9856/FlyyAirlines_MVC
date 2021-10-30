@@ -28,27 +28,40 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="MyReservations">Rezerwacje</a>
+                    <ul class="nav navbar-nav flex-grow-1">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#">
+                                Informacje
+                                <span class="caret"></span>
+                            </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark dropdownHover" asp-area="" asp-controller="News" asp-action="NewsList">Aktualności</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark dropdownHover" asp-area="" asp-controller="Home" asp-action="AboutUs">O nas</a>
+                                    </li>
+                                </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index">Wyloty</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">O nas</a>
-                        </li>
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="nav navbar-nav">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"><i>@User.Claims.FirstOrDefault(x => x.Type.Contains("emailaddress")).Value</i></a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#">
+                                    Twój panel
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu text-center">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark"><b>Cześć</b> <i>@User.Claims.FirstOrDefault(x => x.Type.Contains("emailaddress")).Value!</i></a>
+                                    </li>
+                                    <partial name="_UserOptions" />
+                                </ul>
                             </li>
-                            <partial name="_UserOptions" />
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj</a>
                             </li>

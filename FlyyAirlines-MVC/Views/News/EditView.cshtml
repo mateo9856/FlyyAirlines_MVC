@@ -1,0 +1,24 @@
+﻿@model NewsFormModel
+
+<div class="form-box">
+    <form asp-controller="News" asp-action=@(Model.Id == null ? "Create" : "Edit")
+          asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Temat</label>
+            <input class="form-control" type="text" asp-for="@Model.Topic" />
+        </div>
+        <div class="form-group">
+            <label>Opis</label>
+            <textarea class="form-control" asp-for="@Model.Content" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="file" accept="image/*" asp-for="@Model.Image" />
+        </div>
+        <div class="form-group">
+            <input type="date" class="form-control" asp-for="@Model.PublicDate" />
+        </div>
+        <div class="form-group">
+            <input style="margin-top:10px;" class="btn btn-primary" type="submit" value="Dodaj!" />
+        </div>
+    </form>
+</div>

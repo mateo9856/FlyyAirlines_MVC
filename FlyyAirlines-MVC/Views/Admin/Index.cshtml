@@ -1,6 +1,6 @@
 ﻿<div>
     <h1>Dashboard</h1>
-    <ul style="list-style:none; margin-top: 30px;" class="d-flex justify-content-between">
+    <ul style="list-style:none; margin-top: 30px;" class="d-flex justify-content-around flex-wrap align-content-md-start">
         <li class="border AdminSelectPanel bg-primary" asp-action="Users">
             <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="Users">
                 <i class="display-4 text-white bi bi-person"></i>
@@ -29,6 +29,12 @@
             <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-action="Airplanes">
                 <i class="display-4 text-white bi bi-arrow-down-up"></i>
                 <span class="text-white h5">Samoloty</span>
+            </a>
+        </li>
+        <li class="border AdminSelectPanel bg-primary">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-controller="News" asp-action="NewsPanelList">
+                <i class="display-4 text-white bi bi-arrow-down-up"></i>
+                <span class="text-white h5">Wiadomości</span>
             </a>
         </li>
     </ul>

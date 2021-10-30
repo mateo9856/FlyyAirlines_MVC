@@ -1,0 +1,31 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<News>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+<nav aria-label="User Paging">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+@if (Model.Count() <= 0)
+{
+    <h6 class="display-4 text-center">Brak wiadomości</h6>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <div class="newsItemCard d-flex justify-content-lg-between">
+                    <img style="height:80px;" src="@item.ImageUrl" />
+                    <h4 class="text-center">@item.Topic</h4>
+                    <span class="position-absolute top-0 end-0">@item.PublicDate</span>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<nav aria-label="Suppliers navigation example">
+    <vc:pager paging-list="@Model" />
+</nav>

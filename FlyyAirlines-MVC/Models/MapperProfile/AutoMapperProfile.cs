@@ -23,6 +23,13 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
                 .ForMember(d => d.FlightName, opt => opt.MapFrom(d => d.Flights.FlightName))
                 .ReverseMap();
 
+            CreateMap<News, NewsFormModel>()
+                .ForMember(d => d.Image, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<NewsFormModel, News>()
+                .ForMember(d => d.ImageUrl, opt => opt.Ignore());
+
             CreateMap<ReservationFormModel, Reservation>()
                 .ForMember(d => d.Flights, opt => opt.Ignore())
                 .ForMember(d => d.User, opt => opt.Ignore())

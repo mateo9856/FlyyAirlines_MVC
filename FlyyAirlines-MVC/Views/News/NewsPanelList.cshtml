@@ -1,0 +1,40 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<News>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+<h2>Rezerwacje</h2>
+
+<nav aria-label="User Paging">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
+<a class="btn btn-primary m-3" asp-controller="News" asp-action="EditView">Utwórz</a>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Temat</th>
+            <th scope="col">Data</th>
+            <th scope="col">Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Topic</td>
+                <td>@item.PublicDate</td>
+                <td class="d-flex justify-content-around">
+                    <a asp-controller="Reservation" asp-action="EditView" asp-route-id="@item.Id">
+                        Edytuj
+                    </a>
+                    <a asp-controller="Reservation" asp-action="Get" asp-route-id="@item.Id">Szczegóły</a>
+                    <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Suppliers navigation example">
+    <vc:pager paging-list="@Model" />
+</nav>
