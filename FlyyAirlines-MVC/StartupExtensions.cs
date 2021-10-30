@@ -1,6 +1,7 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines.Services.Account;
+using FlyyAirlines.Services.News;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IBaseService<Employee>, BaseService<Employee>>();
             services.AddScoped<IBaseService<News>, BaseService<News>>();
             services.AddScoped<IBaseService<Message>, BaseService<Message>>();
+            services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IReserveService, ReserveService>();
             services.AddScoped<IAirplanesFlightsService, AirplanesFlightsService>();
