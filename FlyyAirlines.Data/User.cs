@@ -18,6 +18,7 @@ namespace FlyyAirlines.Data
         public string Password { get; set; }
         public string Role { get; set; }
         public override string Email { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<Message> Messages { get; set; }

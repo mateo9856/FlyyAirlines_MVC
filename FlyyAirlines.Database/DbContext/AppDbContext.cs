@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace FlyyAirlines.Database
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public partial class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -19,6 +20,7 @@ namespace FlyyAirlines.Database
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<News> QuickNews { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public override DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,56 +38,18 @@ namespace FlyyAirlines.Database
                 .HasColumnName("UserId");
             modelBuilder.Entity<News>().Property(b => b.Id)
                 .HasColumnName("NewsId");
+            modelBuilder.Entity<Permission>().Property(b => b.Id)
+                .HasColumnName("PermissionId");
 
             InitialData(modelBuilder);
 
+            InitialPermissions(modelBuilder);
+
         }
 
-        protected void InitialData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            });
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "SuperAdmin",
-                NormalizedName = "SUPERADMIN"
-            });
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Employee",
-                NormalizedName = "EMPLOYEE"
-            });
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "User",
-                NormalizedName = "USER"
-            });
+        partial void InitialData(ModelBuilder modelBuilder);
 
-            var passowrdHash = new PasswordHasher<User>();
-
-            modelBuilder.Entity<User>()
-                .HasData(new User
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = "Super@Dmin",
-                    NormalizedUserName = "SUPER@DMIN",
-                    Name = "Mateusz",
-                    Surname = "Magdziak",
-                    PasswordHash = passowrdHash.HashPassword(null, "$M@teuszAdmin4"),
-                    Role = "SuperAdmin",
-                    Email = "mateuszAdmin@flyy.com",
-                    NormalizedEmail = "MATEUSZADMIN@FLYY.COM",
-                    EmailConfirmed = false,
-                    SecurityStamp = string.Empty
-                });
-        }
+        partial void InitialPermissions(ModelBuilder modelBuilder);
 
     }
 }
