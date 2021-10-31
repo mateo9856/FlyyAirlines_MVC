@@ -1,36 +1,18 @@
-﻿@model ReservationFormModel
+﻿@model PermissionFormModel
 
 <div class="form-box">
-    <form asp-controller="Reservation" asp-action=@(Model.Id == null ? "Create" : "Edit") asp-route-id="@Model.Id" method="post">
-        <div class="d-flex">
-            <div class="form-group">
-                <p>Imię:</p>
-                <input class="form-control" type="text" asp-for="@Model.Name" />
-            </div>
-            <div class="form-group">
-                <p>Nazwisko:</p>
-                <input class="form-control" type="text" asp-for="@Model.Surname" />
-            </div>
+    <form asp-controller="News" asp-action=@(Model.Id == null ? "Create" : "Edit")
+          asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Nazwa znormalizowana</label>
+            <input class="form-control" type="text" asp-for="@Model.Name" />
         </div>
         <div class="form-group">
-            <p>Nr identyfikacyjny:</p>
-            <input class="form-control" type="number" asp-for="@Model.PersonIdentify" />
+            <label>Nazwa pełna</label>
+            <textarea class="form-control" asp-for="@Model.FullName" rows="4"></textarea>
         </div>
         <div class="form-group">
-            <p>Miejsce:</p>
-            <input class="form-control" type="number" asp-for="@Model.Seat" />
-        </div>
-        <div class="form-group">
-            <p>Wylot</p>
-            <select class="form-control" asp-for="@Model.FlightId">
-                @foreach (var item in Model.FlightsList)
-                {
-                    <option value="@item.Id">@item.FlightName</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit" value="Zarejestruj!" />
+            <input style="margin-top:10px;" class="btn btn-primary" type="submit" value="Dodaj!" />
         </div>
     </form>
 </div>
