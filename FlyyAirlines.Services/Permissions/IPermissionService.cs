@@ -9,7 +9,7 @@ namespace FlyyAirlines.Services.Permissions
 {
     public interface IPermissionService
     {
-        Task<Permission> GetById(long id);
+        Task<Permission> GetById(string id);
         Task<IEnumerable<Permission>> GetAll();
         IOrderedQueryable<Permission> GetList();
         Task<bool> CheckPermission(User user, string PermissionName);

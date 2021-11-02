@@ -64,7 +64,7 @@ namespace FlyyAirlines.Services.Permissions
             return await dbContext.Permissions.ToListAsync();
         }
 
-        public async Task<Permission> GetById(long id)
+        public async Task<Permission> GetById(string id)
         {
             return await dbContext.Permissions.SingleOrDefaultAsync(d => d.Id == id);
         }
