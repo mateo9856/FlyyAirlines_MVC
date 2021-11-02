@@ -8,8 +8,11 @@
     @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
 </nav>
 
-<a class="btn btn-primary m-3" asp-controller="Permission" asp-action="EditView">Utwórz</a>
-
+<div style="max-width:calc(50% - 50px);" class="d-flex justify-content-sm-around">
+    <a class="btn btn-primary m-3" asp-controller="Permission" asp-action="EditView">Utwórz</a>
+    <a class="btn btn-primary m-3" asp-controller="Permission" asp-action="EditView">Przypisz użytkownikowi</a>
+    <a class="btn btn-primary m-3" asp-controller="Permission" asp-action="EditView">Usuń użytkownikowi</a>
+</div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -25,11 +28,11 @@
                 <td>@item.Name</td>
                 <td>@item.FullName</td>
                 <td class="d-flex justify-content-around">
-                    <a asp-controller="Reservation" asp-action="EditView" asp-route-id="@item.Id">
+                    <a asp-controller="Permission" asp-action="EditView" asp-route-id="@item.Id">
                         Edytuj
                     </a>
-                    <a asp-controller="Reservation" asp-action="Get" asp-route-id="@item.Id">Szczegóły</a>
-                    <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                    <a asp-controller="Permission" asp-action="Get" asp-route-id="@item.Id">Szczegóły</a>
+                    <a asp-controller="Permission" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
                 </td>
             </tr>
         }

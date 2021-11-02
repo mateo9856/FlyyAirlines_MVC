@@ -33,10 +33,18 @@
         </li>
         <li class="border AdminSelectPanel bg-primary">
             <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-controller="News" asp-action="NewsPanelList">
-                <i class="display-4 text-white bi bi-arrow-down-up"></i>
+                <i class="display-4 text-white bi bi-newspaper"></i>
                 <span class="text-white h5">Wiadomości</span>
             </a>
         </li>
+
+        <li class="border AdminSelectPanel bg-primary">
+            <a class="hrefAdmin d-flex flex-column align-content-center text-center" asp-controller="Permission" asp-action="PermissionList">
+                <i class="display-4 text-white bi bi-x-circle"></i>
+                <span class="text-white h5">Uprawnienia</span>
+            </a>
+        </li>
+
     </ul>
 
 </div>
