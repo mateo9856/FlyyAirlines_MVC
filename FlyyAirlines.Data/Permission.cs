@@ -9,7 +9,7 @@ namespace FlyyAirlines.Data
 {
     public class Permission
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string FullName { get; set; }
         public string Name { get; set; }
         public virtual ICollection<User> Users { get; set; }

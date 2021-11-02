@@ -16,25 +16,25 @@ namespace FlyyAirlines.Database
         {
             modelBuilder.Entity<Permission>().HasData(new Permission
             {
-                Id = 1,
+                Id = "621f9c31-727a-4bbd-a792-cf1eae6e793b",
                 FullName = "Full access of the system",
                 Name = "ADMIN"
             });
             modelBuilder.Entity<Permission>().HasData(new Permission
             {
-                Id = 2,
+                Id = "cf00952b-3eb2-4f8c-8688-86d42cae01f0",
                 FullName = "Can add Admins and all Users",
                 Name = "SUPERADMIN"
             });
             modelBuilder.Entity<Permission>().HasData(new Permission
             {
-                Id = 3,
+                Id = "9701b54a-3559-453c-aa15-7754c5cfd491",
                 FullName = "Can view support Page",
                 Name = "ISSUPPORT"
             });
             modelBuilder.Entity<Permission>().HasData(new Permission
             {
-                Id = 4,
+                Id = "658e77ee-22e3-433c-a93c-f1d04b51695b",
                 FullName = "Have access to Employee Panel",
                 Name = "EMPLOYEE"
             });
@@ -71,7 +71,7 @@ namespace FlyyAirlines.Database
 
             modelBuilder.Entity<User>().HasData(new User
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "6e2575e0-aa31-4f6f-b203-a4921803186d",
                     UserName = "Super@Dmin",
                     NormalizedUserName = "SUPER@DMIN",
                     Name = "Mateusz",
