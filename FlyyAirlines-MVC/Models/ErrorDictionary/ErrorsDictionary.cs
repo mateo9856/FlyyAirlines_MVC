@@ -11,7 +11,10 @@ namespace FlyyAirlines_MVC.Models.ErrorDictionary
         {
             {"Forbidden", "Brak uprawnień do tego modułu/elementu"},
             {"Unauthorized", "Nie jesteś zalogowany!"},
-            {"", ""}
+            {"Internal Error", "Wewnętrzny błąd serwera"},
+            {"Request Error", "Niepoprawne zapytanie serwera"},
+            {"Media Type Error", "Niepoprawny format."},
+            {"Not found", "Nie znaleziono!" }
         };
     }
 }
