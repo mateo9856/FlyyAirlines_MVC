@@ -3,6 +3,7 @@ using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines_MVC.Models;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,7 +36,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var GetUser = await userManager.GetUserAsync(User);
                 if(GetUser == null)
                 {
-                    return RedirectToAction("NotFoundPage", "Home");
+                    return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
                 }
                 var GetUserReservations = await reserveService.GetReservationsFromUser(GetUser);
 
@@ -65,14 +66,14 @@ namespace FlyyAirlines_MVC.Controllers
 
             if(GetUser == null)
             {
-                return RedirectToAction("NotFoundPage", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
             var GetByFlightId = await flights.Get(id);
 
             if(GetByFlightId == null)
             {
-                return RedirectToAction("NotFoundPage", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
             return View("Reserve", new ReservationFormModel() { FlightsList = new List<Flight>() { GetByFlightId }, FlightId = GetByFlightId.Id });
@@ -82,7 +83,14 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetFlights = flights.GetAll();
 
-            if(id == null)
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("CHECKRESERVE", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (id == null)
             {
                 return View(new ReservationFormModel()
                 {
@@ -108,7 +116,14 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ReservationFormModel model)
         {
-            if(ModelState.IsValid)
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("CHECKRESERVE", GetUser) || !Authorization.Can("CLIENT", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (ModelState.IsValid)
             {
                 var MapReservation = mapper.Map<Reservation>(model);
                 MapReservation.Id = Guid.NewGuid().ToString();
@@ -138,6 +153,13 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetReserve = await reservation.Get(id);
 
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("CHECKRESERVE", GetUser) || !Authorization.Can("CLIENT", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             if (GetReserve == null)
             {
                 return RedirectToAction("Reservations", "Admin");
@@ -152,6 +174,13 @@ namespace FlyyAirlines_MVC.Controllers
         }
         public async Task<IActionResult> Delete(string id)
         {
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("CHECKRESERVE", GetUser) || !Authorization.Can("CLIENT", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetReserve = await reservation.Get(id);
             await reservation.Delete(GetReserve);
             return RedirectToAction("Reservations", "Admin");

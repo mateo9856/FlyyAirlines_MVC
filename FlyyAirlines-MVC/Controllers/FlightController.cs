@@ -2,6 +2,8 @@
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -17,13 +19,16 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IBaseService<Flight> flight;
         private readonly IBaseService<Airplane> airplane;
         private readonly IMapper mapper;
+        private readonly UserManager<User> user;
 
-        public FlightController(IBaseService<Flight> _flight, IBaseService<Airplane> _airplane, IAirplanesFlightsService _airplaneFlightsService, IMapper _mapper)
+        public FlightController(IBaseService<Flight> _flight, IBaseService<Airplane> _airplane, IAirplanesFlightsService _airplaneFlightsService, IMapper _mapper,
+            UserManager<User> userManager)
         {
             flight = _flight;
             airplane = _airplane;
             airplanesFlightsService = _airplaneFlightsService;
             mapper = _mapper;
+            user = userManager;
         }
         public async Task<IActionResult> Index(int page = 1)
         {
@@ -46,6 +51,13 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> EditAirplaneView(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             if (id == null)
             {
                 return View(new AirplaneFormModel());
@@ -59,13 +71,19 @@ namespace FlyyAirlines_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateAirplane(AirplaneFormModel model)
+        public async Task<IActionResult> CreateAirplane(AirplaneFormModel model)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
             if (ModelState.IsValid)
             {
                 var MapAirplane = mapper.Map<Airplane>(model);
                 MapAirplane.Id = Guid.NewGuid().ToString();
-                airplane.Add(MapAirplane);
+                await airplane.Add(MapAirplane);
             }
 
             return RedirectToAction("Airplanes", "Admin");
@@ -75,6 +93,13 @@ namespace FlyyAirlines_MVC.Controllers
         public async Task<IActionResult> EditAirplane(string id, AirplaneFormModel model)
         {
             var GetAirplane = await airplane.Get(id);
+
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
 
             if (GetAirplane == null)
             {
@@ -90,6 +115,13 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> DeleteAirplane(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetAirplane = await airplane.Get(id);
             await airplane.Delete(GetAirplane);
             return RedirectToAction("Airplanes", "Admin");
@@ -97,6 +129,13 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> EditFlightView(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetAirplane = airplane.GetAll().ToList();
 
             if (id == null)
@@ -119,6 +158,13 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFlight(FlightFormModel model)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             if (ModelState.IsValid)
             {
                 var GetAirplane = await airplane.Get(model.AirplaneId);
@@ -134,6 +180,13 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> EditFlight(string id, FlightFormModel model)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetFlight = await flight.Get(id);
 
             if (GetFlight == null)
@@ -149,6 +202,13 @@ namespace FlyyAirlines_MVC.Controllers
         }
         public async Task<IActionResult> DeleteFlight(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetFlight = await airplane.Get(id);
             await airplane.Delete(GetFlight);
             return RedirectToAction("Flights", "Admin");

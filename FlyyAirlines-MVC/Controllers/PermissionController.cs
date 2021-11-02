@@ -2,6 +2,8 @@
 using FlyyAirlines.Data;
 using FlyyAirlines.Services.Permissions;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -15,28 +17,37 @@ namespace FlyyAirlines_MVC.Controllers
     {
         private readonly IPermissionService permission;
         private readonly IMapper mapper;
+        private readonly UserManager<User> user;
 
-        public PermissionController(IPermissionService permissionService, IMapper _mapper)
+        public PermissionController(IPermissionService permissionService, IMapper _mapper, UserManager<User> userManager)
         {
             permission = permissionService;
             mapper = _mapper;
+            user = userManager;
         }
 
-        public IActionResult PermissionList(int page = 1)
+        public async Task<IActionResult> PermissionList(int page = 1)
         {
             var GetPermissions = permission.GetList();
-            var model = PagingList.CreateAsync(GetPermissions, 10, page);
+            var model = await PagingList.CreateAsync(GetPermissions, 10, page);
             return View(model);
         }
 
-        public IActionResult EditView(long? id)
+        public async Task<IActionResult> EditView(string id)
         {
             if(id == null)
             {
-                return View(new ReservationFormModel());
+                return View(new PermissionFormModel());
             }
 
-            var GetPermission = permission.GetById(id.Value);
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            var GetPermission = permission.GetById(id);
 
             var MapToModel = mapper.Map<PermissionFormModel>(GetPermission);
 
@@ -45,18 +56,33 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> Create(PermissionFormModel model)
         {
-            if(ModelState.IsValid)
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (ModelState.IsValid)
             {
                 var MapToPermission = mapper.Map<Permission>(model);
-                MapToPermission.Id = permission.PermissionsLength();
+                MapToPermission.Name = model.Name.ToUpper();
+                MapToPermission.Id = Guid.NewGuid().ToString();
                 await permission.AddPermissionToTable(MapToPermission);
             }
 
             return RedirectToAction("PermissionList");
         }
 
-        public async Task<IActionResult> Edit(long id, PermissionFormModel model)
+        public async Task<IActionResult> Edit(string id, PermissionFormModel model)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetId = await permission.GetById(id);
 
             if(GetId == null)
@@ -66,13 +92,22 @@ namespace FlyyAirlines_MVC.Controllers
 
             var MapToPermission = mapper.Map(model, GetId);
 
+            MapToPermission.Name = model.Name.ToUpper();
+
             await permission.UpdatePermission(MapToPermission);
 
             return RedirectToAction("PermissionList");
         }
     
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetPermission = await permission.GetById(id);
 
             await permission.DeletePermission(GetPermission);

@@ -1,11 +1,15 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models.ErrorDictionary;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlyyAirlines_MVC.Controllers
@@ -18,9 +22,11 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IBaseService<Flight> FlightsService;
         private readonly IBaseService<Airplane> AirplanesService;
         private readonly IAirplanesFlightsService AirplanesFlightsService;
+        private readonly UserManager<User> signInManager;
 
         public AdminController(IUserService users, IBaseService<Reservation> reservations, IBaseService<Employee> employees,
-             IBaseService<Flight> flights, IBaseService<Airplane> airplanes, IAirplanesFlightsService airplanesFlights)
+             IBaseService<Flight> flights, IBaseService<Airplane> airplanes, IAirplanesFlightsService airplanesFlights,
+             UserManager<User> signManager)
         {
             UsersService = users;
             ReservationsService = reservations;
@@ -28,10 +34,18 @@ namespace FlyyAirlines_MVC.Controllers
             FlightsService = flights;
             AirplanesService = airplanes;
             AirplanesFlightsService = airplanesFlights;
+            signInManager = signManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View();
         }
 
@@ -39,6 +53,13 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetUsers = UsersService.GetList();
             var model = await PagingList.CreateAsync(GetUsers, 10, page);
+
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser)) {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+            
             return View(model);
         }
 
@@ -46,6 +67,14 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetEmployees = EmployeesService.GetList(new string[] {"User"});
             var model = await PagingList.CreateAsync(GetEmployees, 10, page);
+
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View(model);
         }
 
@@ -53,6 +82,14 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetReservations = ReservationsService.GetList(new string[] { "Flights", "User" });
             var model = await PagingList.CreateAsync(GetReservations, 10, page);
+
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View(model);
         }
 
@@ -60,6 +97,14 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetFlights = FlightsService.GetList(new string[] {"Airplane"});
             var model = await PagingList.CreateAsync(GetFlights, 10, page);
+
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View(model);
         }
 
@@ -67,6 +112,14 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetAirplanes = AirplanesService.GetList();
             var model = await PagingList.CreateAsync(GetAirplanes, 10, page);
+
+            var GetUser = await signInManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View(model);
         }
 

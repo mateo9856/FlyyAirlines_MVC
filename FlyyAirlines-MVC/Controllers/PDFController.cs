@@ -2,6 +2,8 @@
 using DinkToPdf.Contracts;
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace FlyyAirlines_MVC.Controllers
     {
         private readonly IBaseService<Reservation> reservations;
         private readonly IConverter _converter;
-        public PDFController(IBaseService<Reservation> reserve, IConverter converter)
+        public PDFController(IBaseService<Reservation> reserve, IConverter converter, UserManager<User> userManager)
         {
             reservations = reserve;
             _converter = converter;
@@ -24,7 +26,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> GeneratePDF(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }

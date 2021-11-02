@@ -3,6 +3,8 @@ using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines.Services.Account;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,21 +19,37 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IAccountService accountService;
         private readonly IMapper mapper;
         private readonly IUserService users;
-        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper, IAccountService _accountService, IUserService Users)
+        private readonly UserManager<User> user;
+        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper, IAccountService _accountService, IUserService Users, UserManager<User> userManager)
         {
             employee = _employee;
             mapper = _mapper;
             accountService = _accountService;
             users = Users;
+            user = userManager;
         }
 
-        public IActionResult EmployeePanel()
+        public async Task<IActionResult> EmployeePanel()
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("EMPLOYEE", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             return View();
         }
         public async Task<IActionResult> EditView(string id)
         {
-            if(id == null)
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (id == null)
             {
                 return View(new EmployeeFormModel()
                 {
@@ -48,7 +66,14 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> Create(EmployeeFormModel model)
         {
-            if(ModelState.IsValid)
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (ModelState.IsValid)
             {
                 var MapToEmployee = mapper.Map<Employee>(model);
                 MapToEmployee.Id = Guid.NewGuid().ToString();
@@ -85,6 +110,13 @@ namespace FlyyAirlines_MVC.Controllers
                 return RedirectToAction("Employees", "Admin");
             }
 
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var MapToEmployee = mapper.Map(model, GetEmployee);
 
             employee.Update(MapToEmployee);
@@ -94,6 +126,14 @@ namespace FlyyAirlines_MVC.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var GetEmployee = await employee.Get(id);
+
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             await employee.Delete(GetEmployee);
             return RedirectToAction("Employees", "Admin");
         }

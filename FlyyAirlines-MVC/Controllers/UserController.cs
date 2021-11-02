@@ -3,6 +3,7 @@ using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines.Services.Account;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -32,15 +33,29 @@ namespace FlyyAirlines_MVC.Controllers
             return View();
         }
 
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             var GetUser = userService.Get(id);
+
+            var GetUserAccount = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
             return View(GetUser);
         }
 
-        public IActionResult EditView(string id)
+        public async Task<IActionResult> EditView(string id)
         {
-            if(id == null)
+            var GetUserAccount = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUserAccount))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (id == null)
             {
                 return View(new UserFormModel());
             }
@@ -60,9 +75,16 @@ namespace FlyyAirlines_MVC.Controllers
 
             var IsUserExist = await userManager.FindByEmailAsync(MapToRegister.Email);
 
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("SUPERADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             if (IsUserExist != null)
             {
-                return RedirectToAction("NotFoundPage", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
             if(ModelState.IsValid)
@@ -77,6 +99,10 @@ namespace FlyyAirlines_MVC.Controllers
                         RegisterUser = await accountService.RegisterUser(MapToRegister, Roles.Employee);
                         break;
                     case "Admin":
+                        if (!Authorization.Can("SUPERADMIN", GetUser))
+                        {
+                            return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+                        }
                         RegisterUser = await accountService.RegisterUser(MapToRegister, Roles.Admin);
                         break;
 
@@ -94,11 +120,18 @@ namespace FlyyAirlines_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(string id, UserFormModel model)
+        public async Task<IActionResult> Edit(string id, UserFormModel model)
         {
             var GetUser = userService.Get(id);
 
-            if(GetUser == null)
+            var GetUserAccount = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUserAccount))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (GetUser == null)
             {
                 return RedirectToAction("Users", "Admin");
             }
@@ -109,9 +142,16 @@ namespace FlyyAirlines_MVC.Controllers
 
             return RedirectToAction("Users", "Admin");
         }
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            userService.Delete(id);
+            var GetUser = await userManager.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            await userService.Delete(id);
             return RedirectToAction("Users", "Admin");
         }
     }

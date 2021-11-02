@@ -1,6 +1,7 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines_MVC.Models;
+using FlyyAirlines_MVC.Models.ErrorDictionary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -52,10 +53,11 @@ namespace FlyyAirlines_MVC.Controllers
             return View("NotFound");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string ErrorName)
         {
-            return View(new ErrorViewModel { });
+            var GetError = ErrorsDictionary.ErrorsList[ErrorName];
+
+            return View(new ErrorViewModel() {RequestCode = ErrorName, RequestDescription = GetError });
         }
     }
 }

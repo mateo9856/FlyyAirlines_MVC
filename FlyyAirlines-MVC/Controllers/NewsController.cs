@@ -3,6 +3,8 @@ using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines.Services.News;
 using FlyyAirlines_MVC.Models.FormModels;
+using FlyyAirlines_MVC.Models.StaticModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -17,11 +19,14 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IBaseService<News> newsService;
         private readonly INewsService news;
         private readonly IMapper mapper;
-        public NewsController(IBaseService<News> _news, IMapper _mapper, INewsService _newsService)
+        private readonly UserManager<User> user;
+
+        public NewsController(IBaseService<News> _news, IMapper _mapper, INewsService _newsService, UserManager<User> userManager)
         {
             newsService = _news;
             mapper = _mapper;
             news = _newsService;
+            user = userManager;
         }
 
         public async Task<IActionResult> NewsList(int page = 1)
@@ -31,13 +36,29 @@ namespace FlyyAirlines_MVC.Controllers
             return View(Model);
         }
 
-        public async Task<IActionResult> NewsPanelList(int page = 1) {
+        public async Task<IActionResult> NewsPanelList(int page = 1) 
+        {
             var GetAllNews = newsService.GetList();
+
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("ADDNEWS", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var Model = await PagingList.CreateAsync(GetAllNews, 5, page);
             return View(Model);
         }
-        public IActionResult EditView(string id)
+        public async Task<IActionResult> EditView(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("ADDNEWS", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             if (id == null)
             {
                 return View(new NewsFormModel() { 
@@ -60,7 +81,14 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NewsFormModel model)
         {
-            if(ModelState.IsValid)
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("ADDNEWS", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (ModelState.IsValid)
             {
                 var MapToNews = mapper.Map<News>(model);
                 MapToNews.ImageUrl = await news.UploadFile(model.Image);
@@ -75,22 +103,29 @@ namespace FlyyAirlines_MVC.Controllers
                 return RedirectToAction("NewsPanelList");
 
             }
-            return RedirectToAction("NotFoundPage", "Home");
+            return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(string id, NewsFormModel model)
         {
-            if(id == null)
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("ADDNEWS", GetUser))
             {
-                return RedirectToAction("NotFoundPage", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            if (id == null)
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
             var GetNews = await newsService.Get(id);
 
             if(GetNews == null)
             {
-                return RedirectToAction("NotFoundPage", "Home");
+                return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
             if(model.Image != null)
@@ -106,6 +141,13 @@ namespace FlyyAirlines_MVC.Controllers
         }
         public async Task<IActionResult> Delete(string id)
         {
+            var GetUser = await user.GetUserAsync(User);
+
+            if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("ADDNEWS", GetUser))
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
             var GetNews = await newsService.Get(id);
             await newsService.Delete(GetNews);
             return RedirectToAction("NewsPanelList");
