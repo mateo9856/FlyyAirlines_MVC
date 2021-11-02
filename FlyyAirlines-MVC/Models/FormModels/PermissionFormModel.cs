@@ -7,7 +7,7 @@ namespace FlyyAirlines_MVC.Models.FormModels
 {
     public class PermissionFormModel
     {
-        public long? Id { get; set; }
+        public string Id { get; set; }
         public string FullName { get; set; }
         public string Name { get; set; }
     }
