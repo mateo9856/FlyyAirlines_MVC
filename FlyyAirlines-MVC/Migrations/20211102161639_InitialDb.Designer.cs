@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlyyAirlines_MVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211021193029_IdentityUpdate")]
-    partial class IdentityUpdate
+    [Migration("20211102161639_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,49 @@ namespace FlyyAirlines_MVC.Migrations
                     b.ToTable("QuickNews");
                 });
 
+            modelBuilder.Entity("FlyyAirlines.Data.Permission", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("PermissionId");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "621f9c31-727a-4bbd-a792-cf1eae6e793b",
+                            FullName = "Full access of the system",
+                            Name = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "cf00952b-3eb2-4f8c-8688-86d42cae01f0",
+                            FullName = "Can add Admins and all Users",
+                            Name = "SUPERADMIN"
+                        },
+                        new
+                        {
+                            Id = "9701b54a-3559-453c-aa15-7754c5cfd491",
+                            FullName = "Can view support Page",
+                            Name = "ISSUPPORT"
+                        },
+                        new
+                        {
+                            Id = "658e77ee-22e3-433c-a93c-f1d04b51695b",
+                            FullName = "Have access to Employee Panel",
+                            Name = "EMPLOYEE"
+                        });
+                });
+
             modelBuilder.Entity("FlyyAirlines.Data.Reservation", b =>
                 {
                     b.Property<string>("Id")
@@ -159,10 +202,10 @@ namespace FlyyAirlines_MVC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("PersonIdentify")
+                    b.Property<long?>("PersonIdentify")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Seat")
+                    b.Property<int?>("Seat")
                         .HasColumnType("int");
 
                     b.Property<string>("Surname")
@@ -263,16 +306,16 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bf06c815-a898-4fb0-b0d1-2ea6595312b4",
+                            Id = "6e2575e0-aa31-4f6f-b203-a4921803186d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "46373504-0dc3-495f-9a3f-3014070b22ab",
+                            ConcurrencyStamp = "38d4d8e5-89ef-4a14-a8f9-aaef0957d435",
                             Email = "mateuszAdmin@flyy.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mateusz",
                             NormalizedEmail = "MATEUSZADMIN@FLYY.COM",
                             NormalizedUserName = "SUPER@DMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKMSsYJp/kTNx4oq1ESXR7epGGvwOrBZ9rwZddITHgwduSZn18c1gZv+eT9vzaiz3w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOeohd4khSZ3u1eJu2VLvs31tJv0d2cB7t68KoJsK3+U2U/fPs6nyNqa4YJTOavtGw==",
                             PhoneNumberConfirmed = false,
                             Role = "SuperAdmin",
                             SecurityStamp = "",
@@ -311,29 +354,29 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "11daa9a9-7b12-4ceb-8f2d-c5316922f2bd",
-                            ConcurrencyStamp = "0e5c5bcc-f49e-4ee8-9769-ad28dfa598da",
+                            Id = "54418971-a6e9-473d-8174-703e95d7bf0b",
+                            ConcurrencyStamp = "680d4f8b-f456-49ce-a5b0-c41c36a0b6c2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c23aff9c-5cc7-43ed-8a99-f59289da3d50",
-                            ConcurrencyStamp = "d4e1cc75-e58f-4fb8-a8c7-b0e265a1d923",
+                            Id = "90dcf717-6a2b-4b16-82e1-c79aeee65bf0",
+                            ConcurrencyStamp = "ccf2bfc3-0447-4f95-a8db-b611d9dc3981",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "1ea70af8-b08c-4ffa-9335-d20bfb744a75",
-                            ConcurrencyStamp = "82783a2a-133e-4ca5-8e61-74db0c72cee0",
+                            Id = "1520b13e-f410-4bac-885d-63fdcaf617ff",
+                            ConcurrencyStamp = "f153dbcd-5558-46ff-9127-b3c951640c15",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "b66c34c0-e2fc-44c7-b5c9-834fa72582cd",
-                            ConcurrencyStamp = "162aa3e0-3496-49ab-aa2f-106c852c6a70",
+                            Id = "92b0bade-461c-40ff-915b-74f33fe0d81c",
+                            ConcurrencyStamp = "5d2c1660-4d58-4412-ab5c-30b43cbc00e5",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -443,6 +486,28 @@ namespace FlyyAirlines_MVC.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PermissionUser", b =>
+                {
+                    b.Property<string>("PermissionsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PermissionsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("PermissionUser");
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionsId = "cf00952b-3eb2-4f8c-8688-86d42cae01f0",
+                            UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d"
+                        });
+                });
+
             modelBuilder.Entity("FlyyAirlines.Data.Employee", b =>
                 {
                     b.HasOne("FlyyAirlines.Data.User", "User")
@@ -532,6 +597,21 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasOne("FlyyAirlines.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PermissionUser", b =>
+                {
+                    b.HasOne("FlyyAirlines.Data.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlyyAirlines.Data.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

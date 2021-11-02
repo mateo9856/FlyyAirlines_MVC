@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FlyyAirlines_MVC.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,6 +62,19 @@ namespace FlyyAirlines_MVC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    PermissionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.PermissionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,14 +266,38 @@ namespace FlyyAirlines_MVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PermissionUser",
+                columns: table => new
+                {
+                    PermissionsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PermissionUser", x => new { x.PermissionsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_PermissionUser_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PermissionUser_Permissions_PermissionsId",
+                        column: x => x.PermissionsId,
+                        principalTable: "Permissions",
+                        principalColumn: "PermissionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
                     ReservationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PersonIdentify = table.Column<int>(type: "int", nullable: false),
-                    Seat = table.Column<int>(type: "int", nullable: false),
+                    PersonIdentify = table.Column<long>(type: "bigint", nullable: true),
+                    Seat = table.Column<int>(type: "int", nullable: true),
                     FlightsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -286,16 +323,32 @@ namespace FlyyAirlines_MVC.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "60b4fb79-a5e6-4f62-acbe-bd15e52911d5", "93124ee8-8994-471b-afe3-54d977324ed9", "Admin", "ADMIN" },
-                    { "44f39d30-4dce-4c79-809b-9b39cc3368ba", "f8afd653-c2a3-46ee-8acc-b2e57825384e", "SuperAdmin", "SUPERADMIN" },
-                    { "931f7e79-c2e6-46b9-b6ab-e7608f700bb3", "47ed1a9e-a47e-499b-9ddb-f5147684daa1", "Employee", "EMPLOYEE" },
-                    { "679e0ccf-9ce3-43a9-8a9f-79e998e24c5f", "4d9a46ef-86d4-417d-9d4a-1c28802e097c", "User", "USER" }
+                    { "54418971-a6e9-473d-8174-703e95d7bf0b", "680d4f8b-f456-49ce-a5b0-c41c36a0b6c2", "Admin", "ADMIN" },
+                    { "90dcf717-6a2b-4b16-82e1-c79aeee65bf0", "ccf2bfc3-0447-4f95-a8db-b611d9dc3981", "SuperAdmin", "SUPERADMIN" },
+                    { "1520b13e-f410-4bac-885d-63fdcaf617ff", "f153dbcd-5558-46ff-9127-b3c951640c15", "Employee", "EMPLOYEE" },
+                    { "92b0bade-461c-40ff-915b-74f33fe0d81c", "5d2c1660-4d58-4412-ab5c-30b43cbc00e5", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "UserId", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "6213f891-dae1-4bb4-801f-db3c0d0ddbe9", 0, "0702aa34-5b5a-4217-b7f7-187f23b77d22", null, "mateuszAdmin@flyy.com", false, false, null, "Mateusz", "MATEUSZADMIN@FLYY.COM", "SUPER@DMIN", null, "AQAAAAEAACcQAAAAEBI9CNTc+6TOH+dQdV/QVHPESpt6ZIOhwcawD9OQJc7GKlX7NX9zySqqh7X0L4fj7w==", null, false, "SuperAdmin", "", "Magdziak", false, "Super@Dmin" });
+                values: new object[] { "6e2575e0-aa31-4f6f-b203-a4921803186d", 0, "38d4d8e5-89ef-4a14-a8f9-aaef0957d435", null, "mateuszAdmin@flyy.com", false, false, null, "Mateusz", "MATEUSZADMIN@FLYY.COM", "SUPER@DMIN", null, "AQAAAAEAACcQAAAAEOeohd4khSZ3u1eJu2VLvs31tJv0d2cB7t68KoJsK3+U2U/fPs6nyNqa4YJTOavtGw==", null, false, "SuperAdmin", "", "Magdziak", false, "Super@Dmin" });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "FullName", "Name" },
+                values: new object[,]
+                {
+                    { "621f9c31-727a-4bbd-a792-cf1eae6e793b", "Full access of the system", "ADMIN" },
+                    { "cf00952b-3eb2-4f8c-8688-86d42cae01f0", "Can add Admins and all Users", "SUPERADMIN" },
+                    { "9701b54a-3559-453c-aa15-7754c5cfd491", "Can view support Page", "ISSUPPORT" },
+                    { "658e77ee-22e3-433c-a93c-f1d04b51695b", "Have access to Employee Panel", "EMPLOYEE" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PermissionUser",
+                columns: new[] { "PermissionsId", "UsersId" },
+                values: new object[] { "cf00952b-3eb2-4f8c-8688-86d42cae01f0", "6e2575e0-aa31-4f6f-b203-a4921803186d" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -352,6 +405,11 @@ namespace FlyyAirlines_MVC.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PermissionUser_UsersId",
+                table: "PermissionUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservations_FlightsId",
                 table: "Reservations",
                 column: "FlightsId");
@@ -386,6 +444,9 @@ namespace FlyyAirlines_MVC.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
+                name: "PermissionUser");
+
+            migrationBuilder.DropTable(
                 name: "QuickNews");
 
             migrationBuilder.DropTable(
@@ -393,6 +454,9 @@ namespace FlyyAirlines_MVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
