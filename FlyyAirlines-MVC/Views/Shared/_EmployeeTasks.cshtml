@@ -1,0 +1,10 @@
+﻿@model List<Permission>
+
+<ul class="d-flex flex-wrap justify-content-around">
+    <li style=@(Model.Any(d => d.Name == "CHECKRESERVE") ? "display:block;" : "display:none")>
+        <button asp-controller="EmployeeOperations" asp-action="CheckReservation" class="btn btn-primary">Sprawdź rezerwacje</button>
+    </li>
+    <li style=@(Model.Any(d => d.Name == "ISSUPPORT") ? "display:block;" : "display:none")>
+        <button asp-controller="EmployeeOperations" asp-action="Support" class="btn btn-info">Wsparcie techniczne</button>
+    </li>
+</ul>

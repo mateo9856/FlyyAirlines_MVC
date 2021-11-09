@@ -1,5 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model EmployeeViewModel
+
+<div class="col-md-3">
+    <h3>@Model.Name @Model.Surname</h3>
+    <h6>@Model.WorkPosition</h6>
+    <p><i>@Model.Email</i></p>
+</div>
+<div class="col-md-6">
+    <div class="row">
+        <p class="h5 text-center text-capitalize">Cześć @Model.Name</p>
+        <p>Wybierz co chcesz robić</p>
+        <div>
+            @if (Model.EmployeePermissions.Any())
+            {
+                <partial name="_EmployeeTasks" model="@Model.EmployeePermissions" />
+            } else
+            {
+                <p class="h5 text-center">Nie posiadasz uprawnień do zadań</p>
+            }
+
+        </div>
+    </div>
+</div>
