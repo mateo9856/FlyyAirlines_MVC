@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,12 @@ namespace FlyyAirlines.Repository
         {
             await _dbContext.Users.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public User GetByClaim(ClaimsPrincipal claim)
+        {
+            var GetEmailClaim = claim.Claims.FirstOrDefault(d => d.Type == "Email").Value;
+            return _dbContext.Users.Include(d => d.Permissions).SingleOrDefault(d => d.Email == GetEmailClaim);
         }
 
         public async Task Delete(string id)

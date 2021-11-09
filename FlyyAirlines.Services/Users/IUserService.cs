@@ -1,6 +1,7 @@
 ﻿using FlyyAirlines.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlyyAirlines.Repository
@@ -13,5 +14,6 @@ namespace FlyyAirlines.Repository
         void Update(User entity);
         Task Delete(string id);
         IOrderedQueryable<User> GetList();
+        User GetByClaim(ClaimsPrincipal claim);
     }
 }
