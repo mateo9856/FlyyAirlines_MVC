@@ -6,6 +6,6 @@ namespace FlyyAirlines.Repository
     public interface IEmployeeService
     {
         Task<bool> CheckReservation(Reservation reservation, User user);
-
+        Task<Employee> GetEmployeeByUser(User user);
     }
 }

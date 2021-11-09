@@ -1,5 +1,6 @@
 ﻿using FlyyAirlines.Data;
 using FlyyAirlines.Database;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,5 +25,9 @@ namespace FlyyAirlines.Repository
             return false;
         }
 
+        public Task<Employee> GetEmployeeByUser(User user)
+        {
+            return _dbContext.Employees.Include(d => d.User).SingleOrDefaultAsync(d => d.User == user);
+        }
     }
 }
