@@ -10,6 +10,10 @@ namespace FlyyAirlines_MVC.Models.StaticModels
     {
         public static bool Can(string Permission, User user)
         {
+            if(user.Permissions == null)
+            {
+                return false;
+            }
             return user.Permissions.Any(d => d.Name == Permission);
         }
 
