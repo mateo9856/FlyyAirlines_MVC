@@ -12,31 +12,45 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
     {
         public AutoMapperProfile()
         {
+            UserMapper();
+            ReservationMapper();
+            FlightAirplaneMapper();
+            NewsMapper();
+            PermissionMapper();
+            EmployeeMapper();
+        }
+
+        private void UserMapper()
+        {
             CreateMap<User, UserFormModel>().ReverseMap();
 
+            CreateMap<RegisterModel, UserFormModel>().ReverseMap();
+        }
+
+        private void ReservationMapper()
+        {
             CreateMap<Reservation, ReservationFormModel>()
                 .ForMember(d => d.FlightId, opt => opt.MapFrom(s => s.Flights.Id))
                 .ForMember(d => d.FlightsList, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<Permission, PermissionFormModel>()
                 .ReverseMap();
 
             CreateMap<Reservation, ReservationSummaryModel>()
                 .ForMember(d => d.FlightName, opt => opt.MapFrom(d => d.Flights.FlightName))
                 .ReverseMap();
 
-            CreateMap<News, NewsFormModel>()
-                .ForMember(d => d.Image, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<NewsFormModel, News>()
-                .ForMember(d => d.ImageUrl, opt => opt.Ignore());
 
             CreateMap<ReservationFormModel, Reservation>()
                 .ForMember(d => d.Flights, opt => opt.Ignore())
                 .ForMember(d => d.User, opt => opt.Ignore())
                 .ReverseMap();
+        }
+
+        private void FlightAirplaneMapper()
+        {
+            CreateMap<Airplane, AirplaneFormModel>();
+
+            CreateMap<AirplaneFormModel, Airplane>()
+                .ForMember(d => d.Flights, opt => opt.Ignore()).ReverseMap();
 
             CreateMap<Flight, FlightFormModel>()
                 .ForMember(d => d.AirplaneId, opt => opt.MapFrom(s => s.Airplane.Id))
@@ -44,15 +58,34 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
 
             CreateMap<FlightFormModel, Flight>()
                 .ForMember(d => d.FlightName, opt => opt.MapFrom(s => (s.FromCity + " - " + s.ToCity)));
-            
-            CreateMap<Employee, EmployeeFormModel>().ReverseMap();
-            
-            CreateMap<Airplane, AirplaneFormModel>();
-
-            CreateMap<AirplaneFormModel, Airplane>()
-                .ForMember(d => d.Flights, opt => opt.Ignore()).ReverseMap();
-            
-            CreateMap<RegisterModel, UserFormModel>().ReverseMap();
         }
+
+        private void NewsMapper()
+        {
+            CreateMap<News, NewsFormModel>()
+                .ForMember(d => d.Image, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<NewsFormModel, News>()
+                .ForMember(d => d.ImageUrl, opt => opt.Ignore());
+        }
+
+        private void PermissionMapper()
+        {
+            CreateMap<Permission, PermissionFormModel>()
+                .ReverseMap();
+        }
+
+        private void EmployeeMapper()
+        {
+            CreateMap<Employee, EmployeeFormModel>()
+                .ReverseMap();
+
+            CreateMap<Employee, EmployeeViewModel>()
+                .ForMember(d => d.Email, opt => opt.MapFrom(d => d.User.Email))
+                .ForMember(d => d.EmployeePermissions, opt => opt.MapFrom(d => d.User.Permissions.ToList()));
+
+        }
+
     }
 }
