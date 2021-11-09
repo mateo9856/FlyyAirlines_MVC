@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IAirplanesFlightsService, AirplanesFlightsService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             return services;
         }
     }
