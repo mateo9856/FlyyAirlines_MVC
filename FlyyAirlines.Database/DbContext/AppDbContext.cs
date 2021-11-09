@@ -48,7 +48,8 @@ namespace FlyyAirlines.Database
             modelBuilder.Entity<User>()
                .HasMany(p => p.Permissions)
                .WithMany(p => p.Users)
-               .UsingEntity(j => j.HasData(new { UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d", PermissionsId = "cf00952b-3eb2-4f8c-8688-86d42cae01f0" }));
+               .UsingEntity(j => j.HasData(new { UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d", PermissionsId = "cf00952b-3eb2-4f8c-8688-86d42cae01f0" },
+                new { UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d", PermissionsId = "621f9c31-727a-4bbd-a792-cf1eae6e793b" }));
         }
 
         partial void InitialData(ModelBuilder modelBuilder);
