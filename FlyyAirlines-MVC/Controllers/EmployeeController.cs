@@ -2,6 +2,7 @@
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
 using FlyyAirlines.Services.Account;
+using FlyyAirlines_MVC.Models;
 using FlyyAirlines_MVC.Models.FormModels;
 using FlyyAirlines_MVC.Models.StaticModels;
 using Microsoft.AspNetCore.Identity;
@@ -19,14 +20,18 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IAccountService accountService;
         private readonly IMapper mapper;
         private readonly IUserService users;
+        private readonly IEmployeeService employeeService;
         private readonly UserManager<User> user;
-        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper, IAccountService _accountService, IUserService Users, UserManager<User> userManager)
+        public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper,
+            IAccountService _accountService, IUserService Users,
+            UserManager<User> userManager, IEmployeeService _employeeService)
         {
             employee = _employee;
             mapper = _mapper;
             accountService = _accountService;
             users = Users;
             user = userManager;
+            employeeService = _employeeService;
         }
 
         public async Task<IActionResult> EmployeePanel()
@@ -38,7 +43,16 @@ namespace FlyyAirlines_MVC.Controllers
                 return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
             }
 
-            return View();
+            var GetEmployee = await employeeService.GetEmployeeByUser(GetUser);
+
+            if(GetEmployee == null)
+            {
+                return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+            }
+
+            var MapToModel = mapper.Map<EmployeeViewModel>(GetEmployee);
+
+            return View(MapToModel);
         }
         public async Task<IActionResult> EditView(string id)
         {
