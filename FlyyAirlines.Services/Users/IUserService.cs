@@ -14,6 +14,7 @@ namespace FlyyAirlines.Repository
         void Update(User entity);
         Task Delete(string id);
         IOrderedQueryable<User> GetList();
-        User GetByClaim(ClaimsPrincipal claim);
+        List<User> GetByMulitpleId(string[] ids);
+        Task<User> GetByClaim(ClaimsPrincipal claim);
     }
 }

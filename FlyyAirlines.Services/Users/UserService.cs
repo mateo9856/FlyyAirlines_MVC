@@ -23,10 +23,10 @@ namespace FlyyAirlines.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public User GetByClaim(ClaimsPrincipal claim)
+        public async Task<User> GetByClaim(ClaimsPrincipal claim)
         {
             var GetEmailClaim = claim.Claims.FirstOrDefault(d => d.Type == "Email").Value;
-            return _dbContext.Users.Include(d => d.Permissions).SingleOrDefault(d => d.Email == GetEmailClaim);
+            return await _dbContext.Users.Include(d => d.Permissions).SingleOrDefaultAsync(d => d.Email == GetEmailClaim);
         }
 
         public async Task Delete(string id)
@@ -38,7 +38,7 @@ namespace FlyyAirlines.Repository
 
         public User Get(string id)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.Id == id);
+            return _dbContext.Users.Include(d => d.Permissions).FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<User> GetAll()
@@ -56,6 +56,20 @@ namespace FlyyAirlines.Repository
             _dbContext.Users.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
+        }
+
+        public List<User> GetByMulitpleId(string[] ids)
+        {
+            List <User> Users = new List<User>();
+            foreach(var item in ids)
+            {
+                var GetUser = this.Get(item);
+                if(GetUser != null)
+                {
+                    Users.Add(GetUser);
+                }
+            }
+            return Users;
         }
     }
 }

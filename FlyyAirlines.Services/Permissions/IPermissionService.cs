@@ -18,6 +18,7 @@ namespace FlyyAirlines.Services.Permissions
         Task<Permission> GetByPermissionName(string PermissionName);
         Task AddPermissionToTable(Permission permission);
         Task UpdatePermission(Permission permission);
+        Task<List<Permission>> GetByMulitpleId(string[] ids);
         long PermissionsLength();
         Task DeletePermission(Permission permission);
     }
