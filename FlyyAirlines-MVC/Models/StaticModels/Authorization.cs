@@ -14,7 +14,8 @@ namespace FlyyAirlines_MVC.Models.StaticModels
             {
                 return false;
             }
-            return user.Permissions.Any(d => d.Name == Permission);
+            var IsTrue = user.Permissions.Any(d => d.Name == Permission);
+            return IsTrue;
         }
 
     }
