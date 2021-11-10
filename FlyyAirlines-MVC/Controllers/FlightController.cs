@@ -19,10 +19,10 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IBaseService<Flight> flight;
         private readonly IBaseService<Airplane> airplane;
         private readonly IMapper mapper;
-        private readonly UserManager<User> user;
+        private readonly IUserService user;
 
         public FlightController(IBaseService<Flight> _flight, IBaseService<Airplane> _airplane, IAirplanesFlightsService _airplaneFlightsService, IMapper _mapper,
-            UserManager<User> userManager)
+            IUserService userManager)
         {
             flight = _flight;
             airplane = _airplane;
@@ -51,7 +51,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> EditAirplaneView(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -73,7 +73,7 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAirplane(AirplaneFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -94,7 +94,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetAirplane = await airplane.Get(id);
 
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -115,7 +115,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> DeleteAirplane(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -129,7 +129,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> EditFlightView(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -158,7 +158,7 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFlight(FlightFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -180,7 +180,7 @@ namespace FlyyAirlines_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> EditFlight(string id, FlightFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -202,7 +202,7 @@ namespace FlyyAirlines_MVC.Controllers
         }
         public async Task<IActionResult> DeleteFlight(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {

@@ -21,7 +21,6 @@ namespace FlyyAirlines_MVC.Controllers
         private readonly IMapper mapper;
         private readonly IUserService users;
         private readonly IEmployeeService employeeService;
-        private readonly UserManager<User> user;
         public EmployeeController(IBaseService<Employee> _employee, IMapper _mapper,
             IAccountService _accountService, IUserService Users,
             UserManager<User> userManager, IEmployeeService _employeeService)
@@ -30,13 +29,12 @@ namespace FlyyAirlines_MVC.Controllers
             mapper = _mapper;
             accountService = _accountService;
             users = Users;
-            user = userManager;
             employeeService = _employeeService;
         }
 
         public async Task<IActionResult> EmployeePanel()
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await users.GetByClaim(User);
 
             if (!Authorization.Can("EMPLOYEE", GetUser))
             {
@@ -56,7 +54,7 @@ namespace FlyyAirlines_MVC.Controllers
         }
         public async Task<IActionResult> EditView(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await users.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -80,7 +78,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> Create(EmployeeFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await users.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -124,7 +122,7 @@ namespace FlyyAirlines_MVC.Controllers
                 return RedirectToAction("Employees", "Admin");
             }
 
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await users.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -141,7 +139,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetEmployee = await employee.Get(id);
 
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await users.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {

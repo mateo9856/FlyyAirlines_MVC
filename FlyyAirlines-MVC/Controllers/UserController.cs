@@ -37,9 +37,9 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetUser = userService.Get(id);
 
-            var GetUserAccount = await userManager.GetUserAsync(User);
+            var GetUserAccount = await userService.GetByClaim(User);
 
-            if (!Authorization.Can("ADMIN", GetUser))
+            if (!Authorization.Can("ADMIN", GetUserAccount))
             {
                 return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
             }
@@ -48,7 +48,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> EditView(string id)
         {
-            var GetUserAccount = await userManager.GetUserAsync(User);
+            var GetUserAccount = await userService.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUserAccount))
             {
@@ -75,7 +75,7 @@ namespace FlyyAirlines_MVC.Controllers
 
             var IsUserExist = await userManager.FindByEmailAsync(MapToRegister.Email);
 
-            var GetUser = await userManager.GetUserAsync(User);
+            var GetUser = await userService.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser) || !Authorization.Can("SUPERADMIN", GetUser))
             {
@@ -124,7 +124,7 @@ namespace FlyyAirlines_MVC.Controllers
         {
             var GetUser = userService.Get(id);
 
-            var GetUserAccount = await userManager.GetUserAsync(User);
+            var GetUserAccount = await userService.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUserAccount))
             {

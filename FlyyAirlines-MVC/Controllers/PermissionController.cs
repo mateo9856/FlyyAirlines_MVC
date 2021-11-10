@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FlyyAirlines.Data;
+using FlyyAirlines.Repository;
 using FlyyAirlines.Services.Permissions;
+using FlyyAirlines_MVC.Models;
 using FlyyAirlines_MVC.Models.FormModels;
 using FlyyAirlines_MVC.Models.StaticModels;
 using Microsoft.AspNetCore.Identity;
@@ -17,9 +19,9 @@ namespace FlyyAirlines_MVC.Controllers
     {
         private readonly IPermissionService permission;
         private readonly IMapper mapper;
-        private readonly UserManager<User> user;
+        private readonly IUserService user;
 
-        public PermissionController(IPermissionService permissionService, IMapper _mapper, UserManager<User> userManager)
+        public PermissionController(IPermissionService permissionService, IMapper _mapper, IUserService userManager)
         {
             permission = permissionService;
             mapper = _mapper;
@@ -40,7 +42,7 @@ namespace FlyyAirlines_MVC.Controllers
                 return View(new PermissionFormModel());
             }
 
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -54,9 +56,49 @@ namespace FlyyAirlines_MVC.Controllers
             return View(MapToModel);
         }
 
+        public async Task<IActionResult> AddToUser()
+        {
+            var GetUser = await user.GetByClaim(User);
+
+            if(Authorization.Can("ADMIN", GetUser))
+            {
+                var GetPermissions = await permission.GetAll();
+                var GetUsers = user.GetAll();
+                return View("PermissionManager", new PermissionManagerModel() { 
+                    Permissions = GetPermissions.ToList(),
+                    Users = GetUsers.ToList(),
+                });
+            }
+            return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToUser(PermissionManagerModel model)
+        {
+            var GetUser = await user.GetByClaim(User);
+            if (Authorization.Can("ADMIN", GetUser))
+            {
+                var GetPermissions = permission.GetByMulitpleId(model.SelectedPermissions);
+                var GetUsers = user.GetByMulitpleId(model.SelectedUsers);
+
+            }
+            return RedirectToAction("PermissionList");
+        }
+
+        public async Task<IActionResult> RemoveFromUser()
+        {
+            var GetUser = await user.GetByClaim(User);
+
+            if (Authorization.Can("ADMIN", GetUser))
+            {
+                return View();
+            }
+            return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+        }
+
         public async Task<IActionResult> Create(PermissionFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -76,7 +118,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> Edit(string id, PermissionFormModel model)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
@@ -101,7 +143,7 @@ namespace FlyyAirlines_MVC.Controllers
     
         public async Task<IActionResult> Delete(string id)
         {
-            var GetUser = await user.GetUserAsync(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (!Authorization.Can("ADMIN", GetUser))
             {
