@@ -27,7 +27,8 @@ namespace FlyyAirlines.Services.Account
             await userManager.AddClaimsAsync(checkUser, new Claim[]
             {
                     new Claim("Role", checkUser.Role),
-                    new Claim("Email", checkUser.Email)
+                    new Claim("Email", checkUser.Email),
+                    new Claim("User", checkUser.UserName)
             });
 
             if (checkUser == null)
