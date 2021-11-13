@@ -9,5 +9,6 @@ namespace FlyyAirlines.Repository
     {
         Task<IEnumerable<Reservation>> GetReservationsFromUser(User user);
         Task<Reservation> GetByFlightId(string id);
+        Task<Reservation> GetByPersonIdentify(long id);
     }
 }

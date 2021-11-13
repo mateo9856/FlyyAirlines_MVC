@@ -20,7 +20,12 @@ namespace FlyyAirlines.Repository
 
         public async Task<Reservation> GetByFlightId(string id)
         {
-            return await _dbContext.Reservations.Include(f => f.Flights).SingleOrDefaultAsync(d => d.Flights.Id == id);
+            return await _dbContext.Reservations.Include(f => f.Flights).Include(d => d.Flights.Airplane).SingleOrDefaultAsync(d => d.Flights.Id == id);
+        }
+
+        public async Task<Reservation> GetByPersonIdentify(long id)
+        {
+            return await _dbContext.Reservations.Include(d => d.Flights.Airplane).Include(d => d.Flights).SingleOrDefaultAsync(d => d.PersonIdentify == id);
         }
 
         public async Task <IEnumerable<Reservation>> GetReservationsFromUser(User user)
