@@ -8,6 +8,7 @@ namespace FlyyAirlines_MVC.Models
 {
     public class PermissionManagerModel
     {
+        public string Operation { get; set; }
         public List<Permission> Permissions { get; set; }
         public List<User> Users { get; set; }
         public string[] SelectedPermissions { get; set; }
