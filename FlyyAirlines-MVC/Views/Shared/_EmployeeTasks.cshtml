@@ -1,10 +1,22 @@
 ﻿@model List<Permission>
 
-<ul class="d-flex flex-wrap justify-content-around">
-    <li style=@(Model.Any(d => d.Name == "CHECKRESERVE") ? "display:block;" : "display:none")>
-        <button asp-controller="EmployeeOperations" asp-action="CheckReservation" class="btn btn-primary">Sprawdź rezerwacje</button>
+<ul class="d-flex flex-wrap justify-content-center align-content-md-start">
+    <li class="border AdminSelectPanel bg-primary" style=@(Model.Any(d => d.Name == "CHECKRESERVE") ? "display:block;" : "display:none")>
+        <a asp-controller="EmployeeOperations" asp-action="CheckReservation" class="hrefAdmin d-flex flex-column align-content-center text-center">
+            <i class="display-4 text-white bi bi-book"></i>
+            <span class="text-white h5">Sprawdź rezerwacje</span>
+        </a>
     </li>
-    <li style=@(Model.Any(d => d.Name == "ISSUPPORT") ? "display:block;" : "display:none")>
-        <button asp-controller="EmployeeOperations" asp-action="Support" class="btn btn-info">Wsparcie techniczne</button>
+    <li class="border AdminSelectPanel bg-secondary" style=@(Model.Any(d => d.Name == "CHECKRESERVE") ? "display:block;" : "display:none")>
+        <a asp-controller="Reservation" asp-action="EditView" class="hrefAdmin d-flex flex-column align-content-center text-center">
+            <i class="display-4 text-white bi bi-book"></i>
+            <span class="text-white h5">Dodaj rezerwacje</span>
+        </a>
+    </li>
+    <li class="border AdminSelectPanel bg-success" style=@(Model.Any(d => d.Name == "ISSUPPORT") ? "display:block;" : "display:none")>
+        <a asp-controller="EmployeeOperations" asp-action="Support" class="hrefAdmin d-flex flex-column align-content-center text-center">
+            <i class="display-4 text-white bi bi-chat-dots"></i>
+            <span class="text-white h5">Wsparcie techniczne</span>
+        </a>
     </li>
 </ul>
