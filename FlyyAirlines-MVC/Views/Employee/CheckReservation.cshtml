@@ -1,0 +1,70 @@
+﻿@model CheckReserveModel
+
+<div class="row">
+    <div class="col-6">
+        <p>Wprowadź identyfikator lub wypełnij formularz</p>
+        <form asp-action="CheckReservation" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" asp-for="@Model.ReservationId"/>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <label class="switch" id="getReserve">
+                        <input type="checkbox" id="toggleSwitcher" />
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Sprawdź danymi</p>
+                </div>
+                <div>
+                    <input type ="submit" class="btn btn-primary" value="Sprawdź!"/>
+                </div>
+            </div>
+            <div id="quickReserve">
+                <div class="form-group">
+                    Imię:
+                    <input class="form-control" type="text" asp-for="@Model.Name"/>
+                </div>
+                <div class="form-group">
+                    Nazwisko:
+                    <input class="form-control" type="text" asp-for="@Model.Surname"/>
+                </div>
+                <div class="form-group">
+                    Identyfikator:
+                    <input class="form-control" type="number" asp-for="@Model.PersonIdentify"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+        @if (Model.IsChecked.Value == true)
+        {
+            <h4>Podsumowanie</h4>
+
+            <ul class="list-group">
+                <li class="list-group">
+                    <b>Imię: </b>@Model.Name
+                </li>
+                <li class="list-group">
+                    <b>Nazwisko: </b>@Model.Surname
+                </li>
+                <li class="list-group">
+                    <b>ID: </b>@Model.PersonIdentify.Value
+                </li>
+                <li class="list-group">
+                    <b>Miejsce: </b>@Model.Seat.Value
+                </li>
+                <li class="list-group">
+                    <b>Wylot: </b>@Model.FlightName
+                </li>
+                <li class="list-group">
+                    <b>Samolot: </b>@Model.AirplaneName
+                </li>
+            </ul>
+
+            <a target="_blank" asp-controller="PDF" asp-action="GeneratePDF" asp-route-id="@Model.ReservationId" class="btn btn-outline-primary">Generuj PDF</a>
+
+        }
+    </div>
+</div>
+
+<script src="~/js/ReserveSwitcher.js" asp-append-version="true"></script>

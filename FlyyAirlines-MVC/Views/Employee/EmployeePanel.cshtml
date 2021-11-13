@@ -1,23 +1,24 @@
 ﻿@model EmployeeViewModel
+    <div style="min-height:100%">
+        <div class="row">
+            <div style="background-color:#c1c1c1;" class="col-md-3 text-center rounded employeeVisitor p-3">
+                <h3>@Model.Name @Model.Surname</h3>
+                <h6>@Model.WorkPosition</h6>
+                <p><i>@Model.Email</i></p>
+            </div>
+            <div style="margin-top:15px;" class="col-md-6 h-100">
+                <p class="h4 text-capitalize text-center">Cześć @Model.Name! <span class="text-secondary font-italic">Wybierz co chcesz robić</span></p>
+                <div style="margin-top:15px;">
+                    @if (Model.EmployeePermissions.Any())
+                    {
+                        <partial name="_EmployeeTasks" model="@Model.EmployeePermissions" />
+                    }
+                    else
+                    {
+                        <p class="employeeNone">Nie posiadasz uprawnień do zadań!</p>
+                    }
 
-<div class="col-md-3">
-    <h3>@Model.Name @Model.Surname</h3>
-    <h6>@Model.WorkPosition</h6>
-    <p><i>@Model.Email</i></p>
-</div>
-<div class="col-md-6">
-    <div class="row">
-        <p class="h5 text-center text-capitalize">Cześć @Model.Name</p>
-        <p>Wybierz co chcesz robić</p>
-        <div>
-            @if (Model.EmployeePermissions.Any())
-            {
-                <partial name="_EmployeeTasks" model="@Model.EmployeePermissions" />
-            } else
-            {
-                <p class="h5 text-center">Nie posiadasz uprawnień do zadań</p>
-            }
-
+                </div>
+            </div>
         </div>
     </div>
-</div>
