@@ -14,7 +14,8 @@ namespace FlyyAirlines_MVC.Models.ErrorDictionary
             {"Internal Error", "Wewnętrzny błąd serwera"},
             {"Request Error", "Niepoprawne zapytanie serwera"},
             {"Media Type Error", "Niepoprawny format."},
-            {"Not found", "Nie znaleziono!" }
+            {"Not found", "Nie znaleziono!" },
+            {"FormError", "Formularz źle wypełniony!" }
         };
     }
 }
