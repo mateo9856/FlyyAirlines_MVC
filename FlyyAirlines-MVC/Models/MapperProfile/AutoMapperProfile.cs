@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlyyAirlines.Data;
+using FlyyAirlines_MVC.Models.EmployeeActions;
 using FlyyAirlines_MVC.Models.FormModels;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,13 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
                 .ForMember(d => d.Flights, opt => opt.Ignore())
                 .ForMember(d => d.User, opt => opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<Reservation, CheckReserveModel>()
+                .ForMember(d => d.ReservationId, opt => opt.MapFrom(d => d.Id))
+                .ForMember(d => d.FlightName, opt => opt.MapFrom(d => d.Flights.FlightName))
+                .ForMember(d => d.AirplaneName, opt => opt.MapFrom(d => d.Flights.Airplane.PlaneName))
+                .ForMember(d => d.IsChecked, opt => opt.Ignore())
+                .ReverseMap();
         }
 
         private void FlightAirplaneMapper()
@@ -83,6 +91,7 @@ namespace FlyyAirlines_MVC.Models.MapperProfile
 
             CreateMap<Employee, EmployeeViewModel>()
                 .ForMember(d => d.Email, opt => opt.MapFrom(d => d.User.Email))
+                .ForMember(d => d.EmployeeOperation, opt => opt.Ignore())
                 .ForMember(d => d.EmployeePermissions, opt => opt.MapFrom(d => d.User.Permissions.ToList()));
 
         }
