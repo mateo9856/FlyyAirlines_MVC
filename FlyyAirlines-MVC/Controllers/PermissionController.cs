@@ -65,6 +65,7 @@ namespace FlyyAirlines_MVC.Controllers
                 var GetPermissions = await permission.GetAll();
                 var GetUsers = user.GetAll();
                 return View("PermissionManager", new PermissionManagerModel() { 
+                    Operation = "ADD",
                     Permissions = GetPermissions.ToList(),
                     Users = GetUsers.ToList(),
                 });
@@ -78,9 +79,24 @@ namespace FlyyAirlines_MVC.Controllers
             var GetUser = await user.GetByClaim(User);
             if (Authorization.Can("ADMIN", GetUser))
             {
-                var GetPermissions = permission.GetByMulitpleId(model.SelectedPermissions);
+                var GetPermissions = await permission.GetByMulitpleId(model.SelectedPermissions);
                 var GetUsers = user.GetByMulitpleId(model.SelectedUsers);
 
+                if(GetPermissions == null || GetUsers == null)
+                {
+                    return RedirectToAction("Error", "Home", new { ErrorName = "FormError" });
+                }
+
+                foreach(var users in GetUsers)
+                {
+                    foreach(var permissions in GetPermissions)
+                    {
+                        if(!users.Permissions.Contains(permissions))
+                        {
+                            await permission.AddPermissionToUser(users, permissions.Name);
+                        }
+                    }
+                }
             }
             return RedirectToAction("PermissionList");
         }
@@ -91,9 +107,46 @@ namespace FlyyAirlines_MVC.Controllers
 
             if (Authorization.Can("ADMIN", GetUser))
             {
-                return View();
+                var GetPermissions = await permission.GetAll();
+                var GetUsers = user.GetAll();
+                return View("PermissionManager", new PermissionManagerModel()
+                {
+                    Operation = "REMOVE",
+                    Permissions = GetPermissions.ToList(),
+                    Users = GetUsers.ToList(),
+                });
             }
             return RedirectToAction("Error", "Home", new { ErrorName = "Forbidden" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromUser(PermissionManagerModel model)
+        {
+            var GetUser = await user.GetByClaim(User);
+
+            if (Authorization.Can("ADMIN", GetUser))
+            {
+                var GetPermissions = await permission.GetByMulitpleId(model.SelectedPermissions);
+                var GetUsers = user.GetByMulitpleId(model.SelectedUsers);
+
+                if (GetPermissions == null || GetUsers == null)
+                {
+                    return RedirectToAction("Error", "Home", new { ErrorName = "FormError" });
+                }
+
+                foreach (var users in GetUsers)
+                {
+                    foreach (var permissions in GetPermissions)
+                    {
+                        if (users.Permissions.Contains(permissions))
+                        {
+                            await permission.DeleteUserPermission(users, permissions.Name);
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("PermissionList");
         }
 
         public async Task<IActionResult> Create(PermissionFormModel model)
