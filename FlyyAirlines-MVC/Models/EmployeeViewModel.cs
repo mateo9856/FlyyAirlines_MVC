@@ -12,6 +12,7 @@ namespace FlyyAirlines_MVC.Models
         public string Surname { get; set; }
         public string Email { get; set; }
         public string WorkPosition { get; set; }
+        public string EmployeeOperation { get; set; }
         public List<Permission> EmployeePermissions { get; set; }
     }
 }
