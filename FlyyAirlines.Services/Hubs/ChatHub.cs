@@ -30,8 +30,8 @@ namespace FlyyAirlines.Repository
 
         public override Task OnConnectedAsync()
         {
-            var email = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("email")).Value;
-            var userName = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("name")).Value;
+            var email = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("Email")).Value;
+            var userName = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("User")).Value;
             if(!ConnectionUsers.Users.Any(d => d.Value.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)))
             {
                 ConnectionUsers.Users.Add(Context.ConnectionId, new HubUserDatas(userName, email, Context.ConnectionId));
