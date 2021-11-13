@@ -1,6 +1,6 @@
 ﻿@model PermissionManagerModel
 <div>
-    <form asp-action="AddToUser" method="post">
+    <form asp-action=@(Model.Operation == "ADD" ? "AddToUser" : "RemoveFromUser") method="post">
         <div class="row">
             <div class="col-6">
                 <h3 class="text-center">Uprawnienia</h3>
@@ -25,6 +25,6 @@
                 </div>
             </div>
         </div>
-        <input class="btn btn-primary" value="Dodaj!" type="submit" />
+        <input class="btn btn-primary" value=@(Model.Operation == "ADD" ? "Dodaj!" : "Usuń!") type="submit" />
     </form>
 </div>
