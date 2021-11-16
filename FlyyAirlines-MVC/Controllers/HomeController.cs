@@ -43,6 +43,11 @@ namespace FlyyAirlines_MVC.Controllers
             return View(Model);
         }
 
+        public IActionResult SupportPage()
+        {
+            return View();
+        }
+
         public IActionResult AboutUs()
         {
             return View();

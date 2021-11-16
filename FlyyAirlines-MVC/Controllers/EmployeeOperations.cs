@@ -28,7 +28,7 @@ namespace FlyyAirlines_MVC.Controllers
 
         public IActionResult Support()
         {
-            return View();
+            return View("Views/Employee/Support.cshtml");
         }
 
         public async Task<IActionResult> CheckReservation()
