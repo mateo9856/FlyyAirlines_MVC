@@ -19,8 +19,9 @@ namespace FlyyAirlines.Repository
 
         public IEnumerable<HubUserDatas> GetConnectedUsers()
         {
-            var GetValues = ConnectionUsers.Users.Select(d => d.Value).ToList();
-            return GetValues;
+            var GetUsers = ConnectionUsers.Users.Where(d => d.Key != Context.ConnectionId)
+                .Select(d => d.Value);
+            return GetUsers;
         }
 
         public string GetConnectionId()
@@ -30,8 +31,8 @@ namespace FlyyAirlines.Repository
 
         public override Task OnConnectedAsync()
         {
-            var email = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("Email")).Value;
-            var userName = Context.User.Claims.SingleOrDefault(d => d.Type.Contains("User")).Value;
+            var email = Context.User.Claims.FirstOrDefault(d => d.Type.Contains("Email")).Value;
+            var userName = Context.User.Claims.FirstOrDefault(d => d.Type.Contains("User")).Value;
             if(!ConnectionUsers.Users.Any(d => d.Value.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)))
             {
                 ConnectionUsers.Users.Add(Context.ConnectionId, new HubUserDatas(userName, email, Context.ConnectionId));

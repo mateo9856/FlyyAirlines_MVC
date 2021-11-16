@@ -2,13 +2,29 @@
     <h5>Panel pomocy technicznej</h5>
     <div class="col-lg-6">
         Wybrany użytkownik:
-        <select class="form-select form-select-sm">
+        <select id="userSelect" class="form-select form-select-sm">
+            @*Get connection users hub*@
             <option>Zaimplementuj Hub</option>
         </select>
+        <div>
+            <ul id="usersList">
+                
+            </ul>
+        </div>
     </div>
     <div class="col-lg-6">
         <div class="row">
+            <div id="messageBox">
+                <ul id="messageList">
 
+                </ul>
+                <br />
+                <input type ="text" id="messageInput" class="form-control-sm" />
+            </div>
         </div>
+        <button id="sendButton" class="btn btn-outline-primary">Wyślij!</button>
     </div>
 </div>
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/Support.js"></script>
