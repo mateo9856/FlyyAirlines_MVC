@@ -2,9 +2,8 @@
     <h5>Panel pomocy technicznej</h5>
     <div class="col-lg-6">
         Wybrany użytkownik:
-        <select id="userSelect" class="form-select form-select-sm">
-            @*Get connection users hub*@
-            <option>Zaimplementuj Hub</option>
+        <select id="userSelect" onchange="changeGroup()" class="form-select form-select-sm">
+            <option value="null">-- Wybierz --</option>
         </select>
         <div>
             <ul id="usersList">

@@ -1,5 +1,10 @@
 ﻿let connection = null;
 
+let actualConnectedUser = null;
+
+const GetList = document.getElementById("usersList");
+const GetSelect = document.getElementById("userSelect");
+
 const connectedUsers = [];
 
 connection = new signalR.HubConnectionBuilder()
@@ -10,7 +15,7 @@ const sendEvent = document.getElementById("sendButton");
 
 sendEvent.disabled = true;
 
-connection.on("ReceiveMessage", function (user, message) {
+connection.on("ReceiveMessage", function (user, message) {//repair to send name
     const li = document.createElement("li");
     li.innerHTML = `<b>${user}: </b> ${message}`;
     document.getElementById("messageList").appendChild(li);
@@ -33,15 +38,22 @@ setInterval(() => {
 
 sendEvent.addEventListener("click", (e => {
     e.preventDefault();
-    const user = null;
+    const user = document.getElementById("userSelect").value;
     const message = document.getElementById("messageInput").value;
     connection.invoke("SendMessage", user, message)
         .catch(err => console.error(err.toString));
 }));
 
+function changeGroup() {
+    if (actualConnectedUser != null) {
+        connection.invoke("LeaveSupportFromGroup", actualConnectedUser);
+    }
+    actualConnectedUser = GetSelect.value;
+
+    connection.invoke("JoinSupportToGroup", actualConnectedUser);
+}
+
 function updateList(element) {
-    const GetList = document.getElementById("usersList");
-    const GetSelect = document.getElementById("userSelect");
     element.forEach(el => {
         if (!connectedUsers.some(x => x.connectionId === el.connectionId)) {
             connectedUsers.push(el);
