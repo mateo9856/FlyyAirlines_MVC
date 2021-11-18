@@ -12,9 +12,8 @@ namespace FlyyAirlines.Repository
     {
         public async Task SendMessage(string user, string message)
         {
-            var GetUserValue = ConnectionUsers.Users.Where(d => d.Key == user);
-            var UserName = GetUserValue.Select(d => d.Value.UserName).First();
-            await Clients.Group($"user_{UserName}").SendAsync("ReceiveMessage", user, message);
+            var UserGroup = ConnectionUsers.Groups.Where(d => d.Key == user).Select(d => d.Value).First();
+            await Clients.Group(UserGroup).SendAsync("ReceiveMessage", user, message);
         }
 
         public IEnumerable<HubUserDatas> GetConnectedUsers()
@@ -40,6 +39,7 @@ namespace FlyyAirlines.Repository
             try
             {
                 var GetByConnectionId = ConnectionUsers.Users.Where(d => d.Key == id).Select(d => d.Value.UserName);
+                ConnectionUsers.Groups.Add(Context.ConnectionId, $"user_{GetByConnectionId.First()}");
                 await Groups.AddToGroupAsync(Context.ConnectionId, $"user_{GetByConnectionId.First()}");
             } catch(Exception)
             {
@@ -53,12 +53,24 @@ namespace FlyyAirlines.Repository
             try
             {
                 var GetByConnectionId = ConnectionUsers.Users.Where(d => d.Key == id).Select(d => d.Value.UserName);
+                ConnectionUsers.Groups.Remove(Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"user_{GetByConnectionId.First()}");
             }
             catch(Exception)
             {
                 return;
             }
+        }
+
+        public bool CheckConnectionToSupport(string Connection, string GroupName)
+        {
+            var CheckUser = ConnectionUsers.Groups.Any(d => d.Key.Equals(Connection) && d.Value.Equals(GroupName));
+            return CheckUser;
+        }
+
+        public string GetUserGroupName()
+        {
+            return ConnectionUsers.Groups.Where(d => d.Key == Context.ConnectionId).Select(d => d.Value).First();
         }
 
         public override async Task OnConnectedAsync()
@@ -69,6 +81,7 @@ namespace FlyyAirlines.Repository
 
             if(!IsSupport)
             {
+                ConnectionUsers.Groups.Add(Context.ConnectionId, $"user_{userName}");
                 await Groups.AddToGroupAsync(Context.ConnectionId, $"user_{userName}");
             }
 
@@ -80,8 +93,8 @@ namespace FlyyAirlines.Repository
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var GetUserName = Context.User.Claims.FirstOrDefault(d => d.Type.Contains("User")).Value;
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"user_{GetUserName}");
+            var GroupName = ConnectionUsers.Groups.Where(d => d.Key == Context.ConnectionId).Select(d => d.Value).First();
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
             ConnectionUsers.Users.Remove(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }

@@ -15,7 +15,7 @@ const sendEvent = document.getElementById("sendButton");
 
 sendEvent.disabled = true;
 
-connection.on("ReceiveMessage", function (user, message) {//repair to send name
+connection.on("ReceiveMessage", function (user, message) {
     const li = document.createElement("li");
     li.innerHTML = `<b>${user}: </b> ${message}`;
     document.getElementById("messageList").appendChild(li);
@@ -54,11 +54,17 @@ function changeGroup() {
 }
 
 function updateList(element) {
+    if (connectedUsers.length > 0) {
+        checkDisconnects(element);
+    }
+
     element.forEach(el => {
         if (!connectedUsers.some(x => x.connectionId === el.connectionId)) {
             connectedUsers.push(el);
             const optionElement = document.createElement("option");
+            optionElement.setAttribute("id", el.connectionId)
             const newList = document.createElement("li");
+            newList.setAttribute("id", el.connectionId);
 
             newList.textContent = el.email;
 
@@ -70,4 +76,17 @@ function updateList(element) {
         }
     });
 
+}
+
+function checkDisconnects(el) {
+    const check = connectedUsers.filter(x => !el.some(d => d.connectionId == x.connectionId));
+    console.log(check);
+    if (check.length > 0) {
+        check.forEach(d => {
+            const getElements = document.querySelectorAll(`#${d.connectionId}`);
+            for (let i = 0; i < getElements.length; i++)
+                getElements[i].remove();
+        })
+        document.getElementById("messageList").innerHTML = "";
+    }
 }
