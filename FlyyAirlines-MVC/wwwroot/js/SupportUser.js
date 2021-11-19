@@ -1,54 +1,69 @@
 ﻿let connection = null;
 
-let userGroupName = "";
-
-const connectedSupport = document.getElementById("connectedUser");
-document.getElementById("reconnectBtn").display = "none";
-connectedSupport.style.display = "none";
-let connectedUsers = null;
-
 connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
     .build(); 
 
+let userGroupName = "";
+
+let connectStatus = "waitforconnect";
+
+const connectedSupport = document.getElementById("connectedUser");
+
+const connectWait = document.getElementById("connectWait");
+
+const reconnectBtn = document.getElementById("reconnectBtn");
+
 const sendEvent = document.getElementById("sendButton");
+
+let connectedUsers = null;
 
 sendEvent.disabled = true;
 
 let ActiveSupport = setInterval(() => {
 
     if (connection != null) {
-        connection.invoke("GetActiveSupports")
-            .then((res) => connectToSupport(res))
+        connection.invoke("GroupPeopleCount", userGroupName)
+            .then((res) => ConnectOperator(res))
             .catch(err => console.error(err));
     }
 
 }, 2000);
 
-function connectToSupport(sup) {
-    if (sup.length > 0) {
-        const SelectUser = sup[Math.floor(Math.random() * sup.length)];
-        connectedSupport.value = SelectUser.connectionId;
+function ConnectOperator(num) {
+    if (connectStatus == "waitforconnect" && num == 2) {
+        connectStatus = "connect";
+        connection.invoke("GetSupportConnectionId", userGroupName).then(res => connectedSupport.value = res);
+        changeStyle(connectStatus);
+    }
 
-        document.getElementById("connectWait").style.display = "none";
-        connectedSupport.style.display = "block";
-        connectedSupport.textContent = "Połączono z doradcą";
+    else if (connectStatus == "connect" && num == 1) {
+        connectStatus = "disconnect";
+        changeStyle(connectStatus);
+        connectedSupport.value = "";
         clearInterval(ActiveSupport);
-        ActiveSupport = setInterval(checkConnection, 2000);
     }
 }
 
-async function checkConnection() {
-    //wait to connect support and optimize this
-    if (await !connection.invoke("CheckConnectionToSupport", connectedSupport.value, userGroupName)) {
-        console.log("Działa");
-        document.getElementById("connectWait").style.display = "block";
-        document.getElementById("connectWait").textContent="Połączenie utracone połącz ponownie!"
-        document.getElementById("reconnectBtn").display = "block";
-        connectedSupport.style.display = "none";
-        connectedSupport.value = null;
-        connectedSupport.textContent = "";
-        clearInterval(ActiveSupport);
+function changeStyle(st) {
+    switch (st) {
+        case "waitforconnect":
+            connectWait.textContent = "Za chwile pomoc techniczna się z tobą skontaktuje...";
+            reconnectBtn.disabled = true;
+            break;
+        case "connect":
+            connectWait.style.display = "none";
+            connectedSupport.style.display = "block";
+            connectedSupport.textContent = "Połączono z doradcą";
+            break;
+        case "disconnect":
+            connectWait.style.display = "block";
+            connectWait.textContent = "Połączenie utracone połącz ponownie!"
+            reconnectBtn.disabled = false;
+            connectedSupport.style.display = "none";
+            connectedSupport.value = null;
+            connectedSupport.textContent = "";
+            break;
     }
 }
 
@@ -74,13 +89,14 @@ sendEvent.addEventListener("click", (e => {
 }));
 
 function reconnect() {
-    document.getElementById("connectWait").textContent = "Za chwile pomoc techniczna się z tobą skontaktuje...";
-    document.getElementById("reconnectBtn").display = "none";
+    connectStatus = "waitforconnect";
+    changeStyle(connectStatus);
+    document.getElementById("messageList").innerHTML = '';
     ActiveSupport = setInterval(() => {
 
         if (connection != null) {
-            connection.invoke("GetActiveSupports")
-                .then((res) => connectToSupport(res))
+            connection.invoke("GroupPeopleCount", userGroupName)
+                .then((res) => ConnectOperator(res))
                 .catch(err => console.error(err));
         }
 

@@ -28,12 +28,6 @@ namespace FlyyAirlines.Repository
             return Context.ConnectionId;
         }
 
-        public IEnumerable<HubUserDatas> GetActiveSupports()
-        {
-            var Users = ConnectionUsers.Users.Where(d => d.Value.IsSupport == true).Select(d => d.Value);
-            return Users;
-        }
-        
         public async Task JoinSupportToGroup(string id)
         {
             try
@@ -48,6 +42,16 @@ namespace FlyyAirlines.Repository
             
         }
 
+        public int GroupPeopleCount(string GroupName)
+        {
+            return ConnectionUsers.Groups.Where(d => d.Value == GroupName).Count();
+        }
+
+        public string GetSupportConnectionId(string GroupName)
+        {
+            return ConnectionUsers.Groups.Where(d => d.Value == GroupName && d.Key != Context.ConnectionId).Select(d => d.Key).First();
+        }
+
         public async Task LeaveSupportFromGroup(string id)
         {
             try
@@ -60,12 +64,6 @@ namespace FlyyAirlines.Repository
             {
                 return;
             }
-        }
-
-        public bool CheckConnectionToSupport(string Connection, string GroupName)
-        {
-            var CheckUser = ConnectionUsers.Groups.Any(d => d.Key.Equals(Connection) && d.Value.Equals(GroupName));
-            return CheckUser;
         }
 
         public string GetUserGroupName()
@@ -93,10 +91,20 @@ namespace FlyyAirlines.Repository
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var GroupName = ConnectionUsers.Groups.Where(d => d.Key == Context.ConnectionId).Select(d => d.Value).First();
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
-            ConnectionUsers.Users.Remove(Context.ConnectionId);
-            await base.OnDisconnectedAsync(exception);
+            try
+            {
+                var GroupName = ConnectionUsers.Groups.Where(d => d.Key == Context.ConnectionId).Select(d => d.Value).First();
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                ConnectionUsers.Users.Remove(Context.ConnectionId);
+                await base.OnDisconnectedAsync(exception);
+            }
         }
     }
 }

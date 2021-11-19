@@ -45,6 +45,7 @@ sendEvent.addEventListener("click", (e => {
 }));
 
 function changeGroup() {
+    document.getElementById("messageList").innerHTML = "";
     if (actualConnectedUser != null) {
         connection.invoke("LeaveSupportFromGroup", actualConnectedUser);
     }
