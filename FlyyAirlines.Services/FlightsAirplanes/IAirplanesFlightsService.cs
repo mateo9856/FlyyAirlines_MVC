@@ -10,6 +10,7 @@ namespace FlyyAirlines.Repository
         IOrderedQueryable<Flight> GetAllFlights();
         Task<bool> CheckReservesFromFlights(Reservation reservation, Flight flight);
         string CalculateFlightTime(string[] datas);
+        Task<IEnumerable<Flight>> GetByFlightName(string flightName);
         int GetBestSellerFlightCount();
     }
 }

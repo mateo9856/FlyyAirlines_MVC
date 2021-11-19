@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlyyAirlines.Data;
 using FlyyAirlines.Repository;
+using FlyyAirlines_MVC.Models;
 using FlyyAirlines_MVC.Models.FormModels;
 using FlyyAirlines_MVC.Models.StaticModels;
 using Microsoft.AspNetCore.Identity;

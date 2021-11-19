@@ -38,8 +38,10 @@
 }
 
 .searchDiv {
-    background-image: url("../images/airplane.jpg");
-    width: 100%;
+    background-image: url("../images/homeSearchImage.jpg");
+    background-size: cover;
+    border-radius: 15px;
+    min-width: 100%;
 }
 
 .imgNewsStyle {

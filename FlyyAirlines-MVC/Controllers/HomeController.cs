@@ -42,6 +42,30 @@ namespace FlyyAirlines_MVC.Controllers
 
             return View(Model);
         }
+        [HttpPost]
+        public async Task<IActionResult> Index(string leavingValue, string destinationValue)
+        {
+
+            var GetFlights = flights.GetAll();
+            var GetNews = news.GetAll();
+            var GetBestSellerCount = airplanesFlightsService.GetBestSellerFlightCount();
+            var Model = new HomeModel
+            {
+                Flights = GetFlights,
+                IsSearched = true,
+                News = GetNews,
+                BestSeller = GetFlights.FirstOrDefault(),
+                BestSellerCount = GetBestSellerCount,
+            };
+
+            var GetSearchFlight = await airplanesFlightsService.GetByFlightName($"{leavingValue} - {destinationValue}");
+            if(GetSearchFlight != null)
+            {
+                Model.SearchedFlights = GetSearchFlight;
+            }
+
+            return View(Model);
+        }
 
         public IActionResult SupportPage()
         {

@@ -8,28 +8,19 @@
         <div class="quickNotifications d-flex justify-content-beetween">
             <div class="quickReservations">
                 <h6 class="text-white text-center text-uppercase">Szybie wyszukiwanie</h6>
-            </div>
-            @if (Model.Flights.Count() > 0)
-            {
-                <form asp-controller="Flight" asp-action="FindFlight" method="post">
-                    <label for="leavings">
-                        <select class="form-select form-select-sm" name="leavingValue" asp-items="@(new SelectList(Model.Flights, "Id", "FlightName"))">
-                            <option>Please select</option>
-                        </select>
-                    </label>
+            <form enctype="multipart/form-data" asp-action="Index" method="post">
+                <label for="leavings">
+                    <input type="text" id="leavings" class="form-control" name="leavingValue" style="margin-top:10px">
+                </label>
                     <label for="destination">
-                        <select class="form-select form-select-sm" name="destinationValue" style="margin-top:10px" asp-items="@(new SelectList(Model.Flights, "Id", "FlightName"))">
-                            <option>Please select</option>
-                        </select>
+                        <input type="text" id="destination" class="form-control" name="destinationValue" style="margin-top:10px">
                     </label>
-                    <input class="btn btn-primary" style="margin-top:10px" type="submit" value="Szukaj !" />
-                </form>
-            }
+                <input class="btn btn-primary" style="margin-top:10px" type="submit" value="Szukaj !" />
+            </form>
+            </div>
             @if (Model.IsSearched)
             {
                 <div class="searchSubmit">
-                    <button class="exitBtn" asp-controller="Flight" asp-action="ResetValues">X</button>
-
                     @if (Model.SearchedFlights.Count() > 0)
                     {
                         <ul class="list-group">

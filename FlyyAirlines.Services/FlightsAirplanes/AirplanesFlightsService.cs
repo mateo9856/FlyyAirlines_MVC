@@ -90,5 +90,10 @@ namespace FlyyAirlines.Repository
                 .First();
             return GetFlights.Count();
         }
+
+        public async Task<IEnumerable<Flight>> GetByFlightName(string flightName)
+        {
+            return await _dbContext.Flights.Where(d => d.FlightName == flightName).ToListAsync();
+        }
     }
 }
