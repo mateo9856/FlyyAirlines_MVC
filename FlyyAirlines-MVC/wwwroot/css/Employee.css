@@ -16,3 +16,14 @@
         height: 80vh;
     }
 }
+
+.supportBox {
+    width:100%;
+    min-height:50vh;
+    margin: 10px 0 10px 0;
+    background-color:whitesmoke;
+}
+
+.liElement {
+    width:100%;
+}

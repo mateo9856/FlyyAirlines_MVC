@@ -62,21 +62,21 @@ namespace FlyyAirlines_MVC.Controllers
 
         public async Task<IActionResult> ReserveByFlightId(string id)
         {
-            var GetUser = user.GetByClaim(User);
+            var GetUser = await user.GetByClaim(User);
 
             if (GetUser == null)
             {
                 return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
-            var GetByFlightId = await flights.Get(id);
+            var GetByFlightId = await flights.EntityWithEagerLoad(d => d.Id == id, new string[] { "Airplane" });
 
             if(GetByFlightId == null)
             {
                 return RedirectToAction("Error", "Home", new { ErrorName = "Not found" });
             }
 
-            return View("Reserve", new ReservationFormModel() { FlightsList = new List<Flight>() { GetByFlightId }, FlightId = GetByFlightId.Id });
+            return View("Reserve", new ReservationFormModel() { FlightsList = new List<Flight>() { GetByFlightId.First() }, FlightId = GetByFlightId.First().Id });
         }
 
         public async Task<IActionResult> EditView(string id)

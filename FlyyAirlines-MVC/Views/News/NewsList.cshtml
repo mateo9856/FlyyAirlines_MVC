@@ -18,8 +18,11 @@ else
             <li class="list-group-item">
                 <div class="newsItemCard d-flex justify-content-lg-between">
                     <img style="height:80px;" src="@item.ImageUrl" />
-                    <h4 class="text-center">@item.Topic</h4>
-                    <span class="position-absolute top-0 end-0">@item.PublicDate</span>
+                    <div class="">
+                        <h4 class="text-center">@item.Topic</h4>
+                        <p>@item.Content</p>
+                    </div>
+                    <span class="text-right">@item.PublicDate.ToShortDateString()</span>
                 </div>
             </li>
         }

@@ -1,16 +1,20 @@
 ﻿<div id="infoStatus">
     <h4 class="text-center" id="connectWait">Za chwile pomoc techniczna się z tobą skontaktuje...</h4>
     <h4 style="display:none;" class="text-center" id="connectedUser"></h4>
-    <button disabled id="reconnectBtn" class="btn btn-primary" onclick="reconnect()">Połącz!</button>
 </div>
-<div class="messageBox">
-    <ul id="messageList">
+<div class="border supportBox">
+    <ul style="list-style-type:none;" id="messageList">
     </ul>
 
     <br />
-    <input type="text" id="messageInput" class="form-control-sm" />
-    <button id="sendButton" class="btn btn-outline-primary">Wyślij!</button>
 </div>
+<div class="input-group">
+    <input type="text" id="messageInput" class="form-control" />
+    <div class="input-group-append">
+        <button id="sendButton" class="btn btn-outline-primary">Wyślij!</button>
+    </div>
+</div>
+<button style="margin-top:10px" disabled id="reconnectBtn" class="btn btn-primary" onclick="reconnect()">Połącz!</button>
 
 <script src="~/js/signalr.js"></script>
 <script src="~/js/SupportUser.js"></script>

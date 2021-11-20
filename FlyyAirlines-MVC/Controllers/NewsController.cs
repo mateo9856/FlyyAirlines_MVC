@@ -94,6 +94,7 @@ namespace FlyyAirlines_MVC.Controllers
                 if (ModelState.IsValid)
                 {
                     var MapToNews = mapper.Map<News>(model);
+                    MapToNews.Id = Guid.NewGuid().ToString();
                     MapToNews.ImageUrl = await news.UploadFile(model.Image);
 
                     if (MapToNews.ImageUrl == null)

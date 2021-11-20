@@ -69,7 +69,10 @@ function changeStyle(st) {
 
 connection.on("ReceiveMessage", function(user, message) {
     const li = document.createElement("li");
-    li.innerHTML = `<b>${user}: </b> ${message}`;
+    li.classList.add("text-left");
+    li.classList.add("border");
+    li.classList.add("liElement");
+    li.innerHTML = `<b>${user}: </b><br /><p>${message}</p>`;
     document.getElementById("messageList").appendChild(li);
 });
 

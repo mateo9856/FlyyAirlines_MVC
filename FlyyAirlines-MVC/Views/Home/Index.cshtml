@@ -57,7 +57,7 @@
                     @foreach (var item in Model.News)
                     {
                         <li id="@item.Id" class="newsCard">
-                            <img src="~@item.ImageUrl" class="imgNewsStyle" alt="image" />
+                            <img src="@item.ImageUrl" class="imgNewsStyle" alt="image" />
                             <h5>"@item.Topic"</h5>
                             <p>"@item.Content"</p>
                         </li>
