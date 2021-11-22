@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>FlyyAirlines_MVC</RootNamespace>
+    <UserSecretsId>db331b84-0189-4864-a65f-feac9df04186</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

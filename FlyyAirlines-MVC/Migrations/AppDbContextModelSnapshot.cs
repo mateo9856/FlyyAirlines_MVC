@@ -306,14 +306,14 @@ namespace FlyyAirlines_MVC.Migrations
                         {
                             Id = "6e2575e0-aa31-4f6f-b203-a4921803186d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "38d4d8e5-89ef-4a14-a8f9-aaef0957d435",
+                            ConcurrencyStamp = "73b338d4-fd97-4252-8de9-2a906f62c792",
                             Email = "mateuszAdmin@flyy.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mateusz",
                             NormalizedEmail = "MATEUSZADMIN@FLYY.COM",
                             NormalizedUserName = "SUPER@DMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOeohd4khSZ3u1eJu2VLvs31tJv0d2cB7t68KoJsK3+U2U/fPs6nyNqa4YJTOavtGw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMyafyJKFzct9uwhBUSDsIdbRaaksGxsFgPiFfys7mwn9EdICk9RNWL9ZQvTkquKXQ==",
                             PhoneNumberConfirmed = false,
                             Role = "SuperAdmin",
                             SecurityStamp = "",
@@ -352,29 +352,29 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "54418971-a6e9-473d-8174-703e95d7bf0b",
-                            ConcurrencyStamp = "680d4f8b-f456-49ce-a5b0-c41c36a0b6c2",
+                            Id = "8967fccf-a146-4160-b150-b153e8a19b08",
+                            ConcurrencyStamp = "db201c3e-751b-4981-9c60-7bbc9ceb3dd2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "90dcf717-6a2b-4b16-82e1-c79aeee65bf0",
-                            ConcurrencyStamp = "ccf2bfc3-0447-4f95-a8db-b611d9dc3981",
+                            Id = "8b20d3a5-8ed9-49fc-bced-5698fc51b4e4",
+                            ConcurrencyStamp = "48899860-2e15-4bb4-aa90-2d18629b29b4",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "1520b13e-f410-4bac-885d-63fdcaf617ff",
-                            ConcurrencyStamp = "f153dbcd-5558-46ff-9127-b3c951640c15",
+                            Id = "c65b4507-9348-4912-97ff-b8846d18951e",
+                            ConcurrencyStamp = "aa136d94-9382-4d40-b1e1-efe59cdee514",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "92b0bade-461c-40ff-915b-74f33fe0d81c",
-                            ConcurrencyStamp = "5d2c1660-4d58-4412-ab5c-30b43cbc00e5",
+                            Id = "a15423b3-f84f-4001-96bd-3ccc3280d4f2",
+                            ConcurrencyStamp = "5229ff1a-27cb-49a9-855b-f214a9ca22e6",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -502,6 +502,11 @@ namespace FlyyAirlines_MVC.Migrations
                         new
                         {
                             PermissionsId = "cf00952b-3eb2-4f8c-8688-86d42cae01f0",
+                            UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d"
+                        },
+                        new
+                        {
+                            PermissionsId = "621f9c31-727a-4bbd-a792-cf1eae6e793b",
                             UsersId = "6e2575e0-aa31-4f6f-b203-a4921803186d"
                         });
                 });
