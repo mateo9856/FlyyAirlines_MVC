@@ -52,8 +52,18 @@ namespace FlyyAirlines_MVC
 
             services.AddSingleton(mapperConfig.CreateMapper());
 
-            services.AddDbContext<AppDbContext>(opt =>
+            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddDbContext<AppDbContext>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines-MVC"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
+            } else
+            {
+                services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
+            }
+
+            services.BuildServiceProvider()
+                .GetService<AppDbContext>().Database.Migrate();
 
             services.AddIdentity<User, IdentityRole>(config =>
             {

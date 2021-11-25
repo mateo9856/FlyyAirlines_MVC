@@ -306,14 +306,14 @@ namespace FlyyAirlines_MVC.Migrations
                         {
                             Id = "6e2575e0-aa31-4f6f-b203-a4921803186d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "73b338d4-fd97-4252-8de9-2a906f62c792",
+                            ConcurrencyStamp = "30e4869a-d9ff-4085-9e1b-a2d0e2883414",
                             Email = "mateuszAdmin@flyy.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mateusz",
                             NormalizedEmail = "MATEUSZADMIN@FLYY.COM",
                             NormalizedUserName = "SUPER@DMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMyafyJKFzct9uwhBUSDsIdbRaaksGxsFgPiFfys7mwn9EdICk9RNWL9ZQvTkquKXQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIqO55YwrgPMHI+1liZ9dpjXTBGKgzCr4HXk5pZdmUHOmPp6YRG8RthrWQbnHynpCw==",
                             PhoneNumberConfirmed = false,
                             Role = "SuperAdmin",
                             SecurityStamp = "",
@@ -352,29 +352,29 @@ namespace FlyyAirlines_MVC.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8967fccf-a146-4160-b150-b153e8a19b08",
-                            ConcurrencyStamp = "db201c3e-751b-4981-9c60-7bbc9ceb3dd2",
+                            Id = "d45330b3-902b-4fc8-95fb-c4a71d0f3160",
+                            ConcurrencyStamp = "4896a6cd-f644-4c9d-b4ed-9fcf9d8f958b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8b20d3a5-8ed9-49fc-bced-5698fc51b4e4",
-                            ConcurrencyStamp = "48899860-2e15-4bb4-aa90-2d18629b29b4",
+                            Id = "4a4857fd-e0b6-4260-972b-93e69254c9fa",
+                            ConcurrencyStamp = "67a13d16-ae3f-4dba-a129-45c80e380be5",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "c65b4507-9348-4912-97ff-b8846d18951e",
-                            ConcurrencyStamp = "aa136d94-9382-4d40-b1e1-efe59cdee514",
+                            Id = "7d645081-95e6-4897-86a6-34062f0ca51d",
+                            ConcurrencyStamp = "31b00a47-2e40-4118-8b76-67873e42e969",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "a15423b3-f84f-4001-96bd-3ccc3280d4f2",
-                            ConcurrencyStamp = "5229ff1a-27cb-49a9-855b-f214a9ca22e6",
+                            Id = "257c15ce-3400-4077-bd29-3f8afe97b56d",
+                            ConcurrencyStamp = "a9fdd0ed-157a-4dea-993b-b28530a32adc",
                             Name = "User",
                             NormalizedName = "USER"
                         });
