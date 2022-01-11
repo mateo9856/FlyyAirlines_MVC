@@ -38,8 +38,6 @@ namespace FlyyAirlines.Database
                 .HasColumnName("UserId");
             modelBuilder.Entity<News>().Property(b => b.Id)
                 .HasColumnName("NewsId");
-            modelBuilder.Entity<Permission>().Property(b => b.Id)
-                .HasColumnName("PermissionId");
 
             InitialData(modelBuilder);
 

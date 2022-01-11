@@ -41,6 +41,15 @@ namespace FlyyAirlines_MVC
 
             services.AddControllersWithViews();
 
+            //if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            //{
+            //    services.AddSignalR().AddAzureSignalR(Configuration["AzureSignalR"]);
+            //}
+            //else
+            //{
+            //    services.AddSignalR();
+            //}
+
             services.AddSignalR();
 
             services.AddPaging();
@@ -52,18 +61,18 @@ namespace FlyyAirlines_MVC
 
             services.AddSingleton(mapperConfig.CreateMapper());
 
-            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
-            {
-                services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines-MVC"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
-            } else
-            {
-                services.AddDbContext<AppDbContext>(opt =>
+            services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
-            }
 
-            services.BuildServiceProvider()
-                .GetService<AppDbContext>().Database.Migrate();
+            //if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            //{
+            //    services.AddDbContext<AppDbContext>(opt =>
+            //    opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines-MVC"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
+            //} else
+            //{
+            //    services.AddDbContext<AppDbContext>(opt =>
+            //    opt.UseSqlServer(Configuration.GetConnectionString("FlyyAirlines"), b => b.MigrationsAssembly("FlyyAirlines-MVC")));
+            //}
 
             services.AddIdentity<User, IdentityRole>(config =>
             {

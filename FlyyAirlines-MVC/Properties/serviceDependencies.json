@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "FlyyAirlines-MVC"
+    },
+    "signalr1": {
+      "type": "signalr",
+      "connectionId": "Azure__SignalR__ConnectionString"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "FlyyAirlines"
+    }
+  }
+}

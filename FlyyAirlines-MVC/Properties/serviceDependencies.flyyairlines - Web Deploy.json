@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/flyyairlines/databases/FlyyAirlines-MVC",
+      "type": "mssql.azure",
+      "connectionId": "FlyyAirlines-MVC",
+      "secretStore": "AzureAppSettings"
+    },
+    "signalr1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.SignalRService/SignalR/flyysignalr",
+      "type": "signalr.azure",
+      "connectionId": "Azure__SignalR__ConnectionString",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/flyyairlines/databases/FlyyAirlines-MVC",
+      "type": "mssql.azure",
+      "connectionId": "FlyyAirlines",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

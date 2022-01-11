@@ -32,7 +32,7 @@ namespace FlyyAirlines.Services.Account
                 return false;
             }
 
-            var IncludePermissions = await dbContext.Users.Include(d => d.Permissions).FirstOrDefaultAsync(d => d == checkUser);
+            var IncludePermissions = await dbContext.Users.Include(d => d.Permissions).FirstOrDefaultAsync(d => d.Id == checkUser.Id);
 
             await userManager.AddClaimsAsync(checkUser, new Claim[]
             {
